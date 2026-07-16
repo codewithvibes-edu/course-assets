@@ -1,0 +1,32 @@
+# Example retrieval eval set with chunking-invariant labels.
+# Real eval sets have 20-100 entries. This sample has 5 to demonstrate the shape.
+#
+# Labels are (source doc, answer substring), never chunk ids. That makes the
+# eval set survive re-chunking, which is exactly what lets you compare chunking
+# strategies against a fixed ruler. These labels come straight from the source
+# docs in corpus/docs/; no index inspection needed.
+
+- query: "what is reciprocal rank fusion"
+  source_doc_id: "rag-basics.md"
+  answer_substring: "summing 1/(k+rank)"
+  notes: "Tests exact-term match for an algorithm name."
+
+- query: "how do I split a document into chunks"
+  source_doc_id: "chunking-strategies.md"
+  answer_substring: "splitting documents into pieces small enough"
+  notes: "Tests semantic match where chunking is the topic."
+
+- query: "why does RAG fail in production"
+  source_doc_id: "rag-basics.md"
+  answer_substring: "each step has a tunable that defaults to wrong"
+  notes: "Tests retrieval against a generic phrasing, not specific terms."
+
+- query: "BM25 hybrid retrieval"
+  source_doc_id: "rag-basics.md"
+  answer_substring: "BM25 + vector retrieval combinations"
+  notes: "Tests hybrid retrieval finding both BM25 and vector matches."
+
+- query: "evaluating retrieval quality"
+  source_doc_id: "rag-basics.md"
+  answer_substring: "Build a 20-30 entry eval set early"
+  notes: "Tests the eval section is retrievable."

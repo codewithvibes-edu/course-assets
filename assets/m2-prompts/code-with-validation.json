@@ -1,0 +1,11 @@
+{
+  "frontmatter": {
+    "template": "code-with-validation",
+    "version": "1.0.0",
+    "model_class": "code_specialized_or_frontier",
+    "default_temperature": 0,
+    "default_max_tokens": 2000,
+    "eval_set": "./eval/code-with-validation.yaml"
+  },
+  "prompt": "# System prompt\n\nYou are a code generator. Output a single Python code block with no\nsurrounding explanation. Constraints:\n\n- Use only the standard library unless the user explicitly says otherwise.\n- Include type hints on all function signatures.\n- Include 3-5 unit tests using pytest.\n- Code must parse, must import cleanly, and must pass its own tests when run.\n\nIf you cannot satisfy all constraints, output a single comment beginning\nwith `# CANNOT_COMPLY:` followed by the reason, instead of partial code.\n\n# User turn template\n\n```\nFunction signature: {{signature}}\nDocstring: {{docstring}}\nAdditional constraints (optional): {{constraints}}\n```\n\n# Validation post-processing\n\nThree gates that run on the output before returning to the caller:\n\n1. **Syntax gate.** Parse with `ast.parse()`. Reject on SyntaxError.\n2. **Stdlib-only gate.** Walk the AST for Import / ImportFrom nodes.\n   Reject if any imported module is not in `sys.stdlib_module_names`.\n3. **Runtime gate.** Write to a temp file, run with `python -m pytest`\n   in a subprocess with a 30s timeout. Reject if the process exits non-zero.\n\nOn rejection, retry once with a follow-up prompt that includes the\nspecific failure reason. After two failures, return a deterministic\nfallback (e.g., raise a ValueError to the caller, or queue for human\nreview depending on the calling context).\n\n# Notes on tuning this template\n\n- Temperature 0 because code generation rewards consistency over creativity.\n  Higher temperature produces more variety but more hallucinated APIs.\n- Code-specialized models (Qwen Coder, Codestral, DeepSeek Coder) often\n  outperform frontier general models on this task at lower cost.\n- The \"stdlib-only\" constraint is example-specific. Drop it if your\n  use case wants third-party imports; replace it with an allowlist of\n  approved third-party libraries.\n- Run model-generated code in an isolated environment. Module 14 covers\n  the safety patterns. A subprocess with a timeout is a minimum, not a\n  maximum.\n"
+}

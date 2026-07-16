@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Model Selection One-Pager</title>
+<style>
+  /* Print-first: light on white, single US Letter page. */
+  @page { size: letter; margin: 0.55in; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #ffffff; color: #1a1f1c; }
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 9.2pt;
+    line-height: 1.38;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  header { border-bottom: 2.5pt solid #059669; padding-bottom: 6pt; margin-bottom: 10pt; }
+  header h1 { font-size: 17pt; font-weight: 800; letter-spacing: -0.02em; }
+  header p { color: #4b5563; font-size: 8.6pt; margin-top: 2pt; }
+  h2 {
+    font-size: 10.5pt; font-weight: 800; color: #065f46;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin: 10pt 0 4pt;
+  }
+  .levers { display: grid; grid-template-columns: 1fr 1fr; gap: 5pt 10pt; }
+  .lever { border-left: 2.5pt solid #10b981; padding-left: 6pt; }
+  .lever b { display: block; font-size: 9.4pt; }
+  .lever span { color: #374151; }
+  table { width: 100%; border-collapse: collapse; margin-top: 2pt; }
+  th, td { text-align: left; padding: 3.5pt 5pt; vertical-align: top; border-bottom: 0.75pt solid #d1d5db; }
+  th {
+    background: #ecfdf5; color: #065f46; font-size: 8.2pt;
+    text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1.25pt solid #059669;
+  }
+  td:first-child { font-weight: 700; white-space: nowrap; }
+  td:nth-child(2) { color: #374151; }
+  .flow { margin-top: 2pt; }
+  .flow li {
+    list-style: none; padding: 3pt 0 3pt 0; color: #1f2937;
+    border-bottom: 0.5pt dotted #d1d5db;
+  }
+  .flow li:last-child { border-bottom: none; }
+  .flow .q { font-weight: 700; }
+  .flow .a { color: #065f46; font-weight: 700; }
+  .note {
+    margin-top: 8pt; background: #f0fdf4; border: 0.75pt solid #a7f3d0;
+    border-radius: 3pt; padding: 5pt 7pt; color: #374151; font-size: 8.4pt;
+  }
+  footer {
+    margin-top: 10pt; padding-top: 5pt; border-top: 0.75pt solid #d1d5db;
+    color: #6b7280; font-size: 8pt; display: flex; justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Model Selection One-Pager</h1>
+    <p>The four levers, the five model classes, and the back-of-the-napkin decision flow. Pin it up. Names rotate; classes are stable.</p>
+  </header>
+
+  <h2>The four levers</h2>
+  <div class="levers">
+    <div class="lever"><b>1 &middot; Parameter count vs effective intelligence</b>
+      <span>Bigger is not always better. A 30B reasoning-tuned model often beats a 70B chat-tuned model on structured output and code. Reasoning training matters more than raw size at the margins that affect your work.</span></div>
+    <div class="lever"><b>2 &middot; Context window vs cost</b>
+      <span>You pay per token in and out. Frontier models are genuinely good at finding one fact in 200K tokens; reasoning and synthesis across the whole window fall off well before the advertised limit. Measure on your own task.</span></div>
+    <div class="lever"><b>3 &middot; Quantization vs quality</b>
+      <span>Q4 is fine for chat. Q8 or fp16 for code, structured output, or anything where one wrong token tanks the result. On hosted APIs this is the provider's problem; it becomes your lever when you run open models yourself.</span></div>
+    <div class="lever"><b>4 &middot; Latency vs throughput</b>
+      <span>Streaming chat needs first-token latency under 500ms or it feels broken. Batch jobs care about tokens-per-second-per-dollar instead. Different model classes win in each regime.</span></div>
+  </div>
+
+  <h2>The five model classes (2026)</h2>
+  <table>
+    <thead><tr><th>Class</th><th>Examples (verify currency)</th><th>When to use</th></tr></thead>
+    <tbody>
+      <tr><td>Frontier reasoning</td><td>Claude Opus / Sonnet, GPT-5.5, Gemini 3 Pro</td><td>High-stakes structured output. When wrong-answer cost &gt; API fee.</td></tr>
+      <tr><td>Mid-size open</td><td>Llama 4, Qwen3 72B-class, Mistral Large</td><td>Synthesis, long context, balanced cost.</td></tr>
+      <tr><td>Code-specialized</td><td>Qwen3-Coder, Codestral, GLM</td><td>Code generation, refactoring, structured output that is mostly code.</td></tr>
+      <tr><td>Small efficient</td><td>Llama 4 small variants, Qwen3 8B, Phi-4, Gemma 3</td><td>Classification, routing, simple chat. Latency-sensitive.</td></tr>
+      <tr><td>Multimodal</td><td>GPT-5.5, Gemini 3 Pro; Claude Opus 4.8 / Sonnet 5 (images + PDFs)</td><td>Image, audio, or video input. Audio or video input still means GPT or Gemini; Claude takes images and PDFs.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>The decision flow (back of the napkin)</h2>
+  <ol class="flow">
+    <li><span class="q">Is the input an image, audio, or video?</span> &rarr; <span class="a">Multimodal.</span> Audio/video narrows the field further; every frontier model reads images.</li>
+    <li><span class="q">Is the output mostly code?</span> &rarr; <span class="a">Code-specialized</span> (or frontier reasoning when a subtle bug is expensive).</li>
+    <li><span class="q">Is it classification, routing, or simple chat where latency matters?</span> &rarr; <span class="a">Small efficient.</span> Cheapest and fastest; wrong answers are cheap to catch.</li>
+    <li><span class="q">Does a wrong answer cost more than the API call?</span> &rarr; <span class="a">Frontier reasoning.</span> Pay for the thinking when the stakes justify it.</li>
+    <li><span class="q">Everything else</span> (synthesis, long context, balanced cost) &rarr; <span class="a">Mid-size open.</span> The workhorse tier.</li>
+  </ol>
+
+  <p class="note"><b>Two standing rules.</b> Model names go stale within 6 months; the classes are what you memorize. And benchmark scores are gamed and often misleading: your eval set, on your data, decides which specific model wins inside a class.</p>
+
+  <footer>
+    <span>Code With Vibes &middot; v1</span>
+    <span>Module 1 &middot; Model selection &middot; routing depth in Module 3</span>
+  </footer>
+</body>
+</html>

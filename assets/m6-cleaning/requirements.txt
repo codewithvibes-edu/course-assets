@@ -1,0 +1,4 @@
+trafilatura>=1.12,<2
+ftfy>=6.2,<7
+pydantic>=2.6,<3
+pytest>=8.0,<9

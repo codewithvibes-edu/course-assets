@@ -1,0 +1,10 @@
+{"id": "note-001", "account_id": "acc_acme", "author": "alice", "body": "Renewal call went well; CFO aligned on the new pricing.", "created_at": "2026-04-22"}
+{"id": "note-002", "account_id": "acc_acme", "author": "alice", "body": "ACME asked about SSO upgrade and SCIM provisioning timeline.", "created_at": "2026-05-01"}
+{"id": "note-003", "account_id": "acc_nimble", "author": "bob", "body": "Champion left the company; replacement not yet identified.", "created_at": "2026-04-15"}
+{"id": "note-004", "account_id": "acc_nimble", "author": "bob", "body": "No one responded to outreach this week; need to escalate to VP-level contact.", "created_at": "2026-04-30"}
+{"id": "note-005", "account_id": "acc_vortex", "author": "alice", "body": "Asked about API rate limits; pointed at docs.", "created_at": "2026-04-10"}
+{"id": "note-006", "account_id": "acc_meridian", "author": "carol", "body": "BAA renewal in motion; legal turnaround quoted at 3 weeks.", "created_at": "2026-04-30"}
+{"id": "note-007", "account_id": "acc_meridian", "author": "carol", "body": "Health score dropped because user adoption stalled after the team reorg.", "created_at": "2026-05-09"}
+{"id": "note-008", "account_id": "acc_borealis", "author": "carol", "body": "Expansion conversation: they want a second team onboarded by Q3.", "created_at": "2026-05-08"}
+{"id": "note-009", "account_id": "acc_juniper", "author": "bob", "body": "Renewal at risk. Champion left in Feb; replacement hasn't engaged with the product.", "created_at": "2026-04-12"}
+{"id": "note-010", "account_id": "acc_juniper", "author": "bob", "body": "Asked about feature parity with a competitor we know they're evaluating.", "created_at": "2026-04-25"}

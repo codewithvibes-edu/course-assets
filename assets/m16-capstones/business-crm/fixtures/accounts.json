@@ -1,0 +1,68 @@
+[
+  {
+    "id": "acc_acme",
+    "name": "ACME Corp",
+    "plan": "enterprise",
+    "mrr_cents": 250000,
+    "contract_start": "2024-08-01",
+    "contract_end": "2026-07-31",
+    "owner": "alice@yourco.com",
+    "health_score": 82,
+    "last_active_at": "2026-05-05"
+  },
+  {
+    "id": "acc_nimble",
+    "name": "Nimble Industries",
+    "plan": "growth",
+    "mrr_cents": 80000,
+    "contract_start": "2025-06-01",
+    "contract_end": "2026-05-31",
+    "owner": "bob@yourco.com",
+    "health_score": 44,
+    "last_active_at": "2026-04-25"
+  },
+  {
+    "id": "acc_vortex",
+    "name": "Vortex Labs",
+    "plan": "starter",
+    "mrr_cents": 15000,
+    "contract_start": "2025-12-01",
+    "contract_end": "2026-11-30",
+    "owner": "alice@yourco.com",
+    "health_score": 71,
+    "last_active_at": "2026-05-06"
+  },
+  {
+    "id": "acc_meridian",
+    "name": "Meridian Health Systems",
+    "plan": "enterprise",
+    "mrr_cents": 320000,
+    "contract_start": "2024-03-15",
+    "contract_end": "2026-06-14",
+    "owner": "carol@yourco.com",
+    "health_score": 58,
+    "last_active_at": "2026-05-09"
+  },
+  {
+    "id": "acc_borealis",
+    "name": "Borealis Logistics",
+    "plan": "growth",
+    "mrr_cents": 95000,
+    "contract_start": "2025-09-01",
+    "contract_end": "2026-08-31",
+    "owner": "carol@yourco.com",
+    "health_score": 88,
+    "last_active_at": "2026-05-12"
+  },
+  {
+    "id": "acc_juniper",
+    "name": "Juniper Analytics",
+    "plan": "growth",
+    "mrr_cents": 110000,
+    "contract_start": "2025-02-01",
+    "contract_end": "2026-06-30",
+    "owner": "bob@yourco.com",
+    "health_score": 33,
+    "last_active_at": "2026-04-12"
+  }
+]

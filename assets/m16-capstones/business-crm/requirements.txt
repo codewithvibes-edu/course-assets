@@ -1,0 +1,4 @@
+anthropic>=0.34,<1
+PyYAML>=6,<7
+pydantic>=2.6,<3
+pytest>=8.0,<9

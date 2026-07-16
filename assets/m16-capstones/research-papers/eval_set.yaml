@@ -1,0 +1,103 @@
+# Eval set for the research-papers assistant.
+# Two flavors:
+#   - retrieval         : question -> the right paper IDs surface in top-k
+#   - citation_validation : hallucinated citations are caught pre-output
+#
+# Run via: python example.py --eval
+
+suite: research-papers-v1
+model_under_test: claude-sonnet-4-7
+
+cases:
+  - id: retrieval-hybrid-rag
+    kind: retrieval
+    input:
+      question: "hybrid retrieval bm25 vector"
+    expected_signal: |
+      Hybrid retrieval paper (lib-001) surfaces in top-k.
+    pass_criteria:
+      expected_paper_ids_any: ["lib-001"]
+
+  - id: retrieval-reranking
+    kind: retrieval
+    input:
+      question: "cross encoder reranking quality lift"
+    expected_signal: |
+      Reranking paper (lib-002) surfaces.
+    pass_criteria:
+      expected_paper_ids_any: ["lib-002"]
+
+  - id: retrieval-chunking
+    kind: retrieval
+    input:
+      question: "chunking strategies section-aware technical docs"
+    expected_signal: |
+      Chunking paper (lib-003) surfaces.
+    pass_criteria:
+      expected_paper_ids_any: ["lib-003"]
+
+  - id: retrieval-evals
+    kind: retrieval
+    input:
+      question: "eval set curation practitioner survey"
+    expected_signal: |
+      Evals paper (lib-004) surfaces.
+    pass_criteria:
+      expected_paper_ids_any: ["lib-004"]
+
+  - id: retrieval-tool-loops
+    kind: retrieval
+    input:
+      question: "tool use stability long agent loops reliability"
+    expected_signal: |
+      Tool-use paper (lib-005) surfaces.
+    pass_criteria:
+      expected_paper_ids_any: ["lib-005"]
+
+  - id: retrieval-citations
+    kind: retrieval
+    input:
+      question: "citation validation hallucination defense"
+    expected_signal: |
+      Citation-validation paper (lib-006) surfaces.
+    pass_criteria:
+      expected_paper_ids_any: ["lib-006"]
+
+  - id: citation-known-passes
+    kind: citation_validation
+    input:
+      text: "Hybrid retrieval helps (lib-001)."
+    expected_signal: |
+      Validator passes a known citation.
+    pass_criteria:
+      expect_validation_failures: false
+
+  - id: citation-unknown-caught
+    kind: citation_validation
+    input:
+      text: "Hybrid retrieval helps (lib-999)."
+    expected_signal: |
+      Validator catches the unknown citation.
+    pass_criteria:
+      expect_validation_failures: true
+
+  - id: citation-mixed-caught
+    kind: citation_validation
+    input:
+      text: "See (lib-001) and (lib-002) and (lib-fake)."
+    expected_signal: |
+      Validator catches the one unknown citation even when others are valid.
+    pass_criteria:
+      expect_validation_failures: true
+
+  - id: e2e-synthesis-no-invalid-citations
+    kind: end_to_end
+    input:
+      question: "hybrid retrieval"
+    expected_signal: |
+      Synthesis output has at least one citation; all citations resolve
+      to known paper ids; bibliography section present.
+    pass_criteria:
+      min_citations: 1
+      no_unknown_citations: true
+      answer_must_contain: ["Bibliography"]

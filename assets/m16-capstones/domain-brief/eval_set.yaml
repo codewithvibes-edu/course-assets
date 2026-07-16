@@ -1,0 +1,115 @@
+# Eval set for the domain intelligence daily brief generator.
+# Two flavors:
+#   - structural : every brief contains the required sections and cites its data
+#   - linter     : claims-linter sweep on adversarial inputs
+#
+# Run via: python example.py --eval
+
+suite: domain-brief-v1
+model_under_test: claude-sonnet-4-7
+
+cases:
+  - id: structural-required-sections
+    kind: structural
+    input: today_context
+    expected_signal: |
+      Generated brief contains all 6 required sections including the
+      data-gaps disclosure.
+    pass_criteria:
+      brief_must_contain_all:
+        - 'What got filed'
+        - 'Projects that moved'
+        - 'Projects that stalled'
+        - 'Similar stretches'
+        - 'What to watch'
+        - 'Data gaps'
+
+  - id: structural-permit-ids-cited
+    kind: structural
+    input: today_context
+    expected_signal: |
+      Brief cites permit ids for every named project; at least 4
+      citations expected from today's fixtures.
+    pass_criteria:
+      brief_must_contain_min_count:
+        substring: 'P-2026-'
+        count: 4
+
+  - id: structural-history-outcomes-listed
+    kind: structural
+    input: today_context
+    expected_signal: |
+      The Similar stretches section lists prior periods with outcome
+      labels (advanced/stalled).
+    pass_criteria:
+      brief_must_contain_min_count:
+        substring: 'advanced'
+        count: 1
+
+  - id: structural-no-unsupported-superlatives
+    kind: structural
+    input: today_context
+    expected_signal: |
+      Brief does not use superlatives the permit feed cannot prove.
+    pass_criteria:
+      brief_must_not_contain_words: ['record-breaking', 'first-ever', 'unprecedented']
+
+  - id: linter-clean-passes
+    kind: linter
+    input: |
+      Meridian Commons Development LLC filed a six-story mixed-use at
+      400 Dock St under P-2026-01184, the top filing by valuation today.
+      Data gaps: none today; all three feeds current.
+    expected_signal: |
+      Linter passes a clean brief that cites its data rows.
+    pass_criteria:
+      expect_validation_failures: false
+
+  - id: linter-unknown-permit-id-blocked
+    kind: linter
+    input: |
+      A new hotel filing landed under P-2099-99999 in the Airport
+      Corridor. Data gaps: none today.
+    expected_signal: |
+      Linter catches a permit id with no data row behind it.
+    pass_criteria:
+      expect_validation_failures: true
+
+  - id: linter-uncited-business-blocked
+    kind: linter
+    input: |
+      Ridgeline Builders Inc broke ground on the Airport Corridor hotel
+      this week. Data gaps: none today.
+    expected_signal: |
+      Linter catches a named business with no permit id citation in the
+      same sentence.
+    pass_criteria:
+      expect_validation_failures: true
+
+  - id: linter-superlative-blocked
+    kind: linter
+    input: |
+      A record-breaking week for Riverfront filings, per P-2026-01184.
+      Data gaps: none today.
+    expected_signal: |
+      Linter catches "record-breaking"; the feed cannot prove it.
+    pass_criteria:
+      expect_validation_failures: true
+
+  - id: linter-missing-gap-disclosure-blocked
+    kind: linter
+    input: |
+      Quiet day. Two small tenant-improvement filings downtown, both
+      routine (P-2026-01190).
+    expected_signal: |
+      Linter catches the missing data-gaps disclosure line.
+    pass_criteria:
+      expect_validation_failures: true
+
+  - id: structural-needs-human-review
+    kind: structural
+    input: today_context
+    expected_signal: |
+      Generated brief is always flagged needs_human_review=true.
+    pass_criteria:
+      needs_human_review: true

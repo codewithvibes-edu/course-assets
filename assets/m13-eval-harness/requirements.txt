@@ -1,0 +1,4 @@
+PyYAML>=6,<7
+jsonschema>=4.20,<5
+anthropic>=0.40,<1
+pytest>=8.0,<9

@@ -1,0 +1,9 @@
+{
+  "$comment": "Copy into ~/Library/Application Support/Claude/claude_desktop_config.json (macOS) or %APPDATA%\\Claude\\claude_desktop_config.json (Windows). Restart Claude Desktop. Replace /absolute/path/to with your actual path.",
+  "mcpServers": {
+    "notes": {
+      "command": "/absolute/path/to/m11-mcp-starter/.venv/bin/python",
+      "args": ["/absolute/path/to/m11-mcp-starter/server.py"]
+    }
+  }
+}

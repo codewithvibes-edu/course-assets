@@ -1,0 +1,86 @@
+[
+  {
+    "id": "lib-001",
+    "title": "Hybrid Retrieval Beats Pure Vector on Domain-Specific Corpora",
+    "authors": ["A. Researcher", "B. Researcher"],
+    "year": 2025,
+    "venue": "Workshop on Retrieval Systems",
+    "sections": {
+      "abstract": "We compare BM25, vector, and hybrid retrieval on three corpora.",
+      "methods": "Three corpora; four embedding models; reciprocal rank fusion.",
+      "results": "Hybrid retrieval (BM25+vector via RRF) outperformed pure vector by 8-14 hit-rate points on the technical corpora and was within 1 point on the general-knowledge corpus.",
+      "discussion": "Hybrid wins where exact-string matches matter (codes, names, identifiers). On general-knowledge corpora the gap closes."
+    },
+    "keywords": ["retrieval", "rag", "bm25", "vector", "hybrid"]
+  },
+  {
+    "id": "lib-002",
+    "title": "Reranking as the Single Largest Quality Lift in Production RAG",
+    "authors": ["C. Researcher"],
+    "year": 2026,
+    "venue": "Industrial AI Symposium",
+    "sections": {
+      "abstract": "We study the effect of cross-encoder reranking on real workloads.",
+      "methods": "Five production RAG pipelines; A/B testing with and without reranking.",
+      "results": "Adding a cross-encoder reranker improved final-answer quality by 20-35% across the five pipelines, measured by human-graded rubrics.",
+      "discussion": "Reranking helps because retrieval scores are coarse. Joint query-chunk scoring catches relevance signal that vector or BM25 alone misses."
+    },
+    "keywords": ["rag", "reranking", "production", "cross-encoder"]
+  },
+  {
+    "id": "lib-003",
+    "title": "Chunking Strategies for Long Technical Documents",
+    "authors": ["D. Researcher"],
+    "year": 2024,
+    "venue": "Practical NLP Notes",
+    "sections": {
+      "abstract": "We evaluate four chunking strategies on a technical-docs corpus.",
+      "methods": "Section-aware, sentence-boundary, fixed-size, contextual.",
+      "results": "Section-aware chunks outperformed fixed-size by ~12 points on hit rate. Contextual prefixes added another 4-6 points on top of section-aware.",
+      "discussion": "Document structure carries information that vector embeddings alone do not capture; chunkers that respect structure perform better."
+    },
+    "keywords": ["chunking", "rag", "technical-docs", "section-aware"]
+  },
+  {
+    "id": "lib-004",
+    "title": "Eval Set Curation: A Practitioner Survey",
+    "authors": ["E. Researcher", "F. Researcher"],
+    "year": 2026,
+    "venue": "ML in Practice",
+    "sections": {
+      "abstract": "Survey of how teams build and maintain LLM eval sets.",
+      "methods": "Interviews with 28 teams across industries.",
+      "results": "Teams that maintained eval sets > 30 entries, updated weekly, and gated releases on regression checks shipped fewer high-severity incidents.",
+      "discussion": "Eval discipline correlates with shipping confidence. Teams that skipped eval sets reported repeated regressions and faith-based deploys."
+    },
+    "keywords": ["evals", "production", "process", "regression"]
+  },
+  {
+    "id": "lib-005",
+    "title": "Tool-Use Stability in Long Agent Loops",
+    "authors": ["G. Researcher", "H. Researcher"],
+    "year": 2026,
+    "venue": "Industrial AI Symposium",
+    "sections": {
+      "abstract": "We analyze tool-call success rates as a function of agent loop depth.",
+      "methods": "Synthetic and production traces; 4 frontier models; 14 tool families.",
+      "results": "Success rate degrades sharply past 8 tool-call rounds. Most production failures cluster between rounds 9 and 14.",
+      "discussion": "Bounding the loop is a cheaper reliability win than fine-tuning. Hard caps + explicit re-planning beats deeper context windows."
+    },
+    "keywords": ["agents", "tool-use", "reliability", "loops"]
+  },
+  {
+    "id": "lib-006",
+    "title": "Citation Validation Reduces Hallucination in Long-Form Synthesis",
+    "authors": ["I. Researcher"],
+    "year": 2026,
+    "venue": "Workshop on Retrieval Systems",
+    "sections": {
+      "abstract": "We study post-generation citation validators as a hallucination defense.",
+      "methods": "Compare three RAG pipelines with and without validators that check every cited source exists in the indexed corpus.",
+      "results": "Citation validators caught 12-19% of generated outputs as having at least one unverifiable citation, which would have shipped to users without the check.",
+      "discussion": "Cite-first prompting alone is not sufficient; output-side validation is needed because models occasionally fabricate plausible-looking IDs."
+    },
+    "keywords": ["citations", "hallucination", "rag", "validation", "synthesis"]
+  }
+]

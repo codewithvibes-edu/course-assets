@@ -1,0 +1,58 @@
+[
+  {
+    "id": "seg-001",
+    "speaker": "host",
+    "text": "Most AI courses spend their first three weeks on transformer math. You do not need transformer math to ship an LLM system.",
+    "start": 0.0,
+    "end": 11.4
+  },
+  {
+    "id": "seg-002",
+    "speaker": "host",
+    "text": "The bottleneck on building useful LLM systems is not the model. It is the data layer. Pretty much every production LLM system that fails in 2026 fails at the data layer, not the model.",
+    "start": 11.4,
+    "end": 28.7
+  },
+  {
+    "id": "seg-003",
+    "speaker": "host",
+    "text": "Here is the test. If your AI feature is failing, ask: where is the data coming from, when was it last refreshed, who signed off that it was the right shape. If you cannot answer those, you have a data problem, not a model problem.",
+    "start": 28.7,
+    "end": 49.2
+  },
+  {
+    "id": "seg-004",
+    "speaker": "host",
+    "text": "Um yeah uh, like, anyway, that is the whole module on data sources you know.",
+    "start": 49.2,
+    "end": 55.0
+  },
+  {
+    "id": "seg-005",
+    "speaker": "host",
+    "text": "Let me give you a concrete example. A team I worked with last quarter shipped a customer support bot. It worked great in demo. In production, it answered 30 percent of questions wrong. The model was fine. Their CRM data was three months stale.",
+    "start": 55.0,
+    "end": 78.5
+  },
+  {
+    "id": "seg-006",
+    "speaker": "guest",
+    "text": "I see this all the time. People treat data work as undignified and rush past it to the model. Then they get six weeks in and the system does not work and they cannot tell why.",
+    "start": 78.5,
+    "end": 96.0
+  },
+  {
+    "id": "seg-007",
+    "speaker": "host",
+    "text": "Right. So the fix is unglamorous. Spend the first month on the data layer. Get one clean source flowing end to end. Validate the schema. Set up a refresh cadence. Then bring the model in.",
+    "start": 96.0,
+    "end": 118.3
+  },
+  {
+    "id": "seg-008",
+    "speaker": "host",
+    "text": "And if your data is bad, the model will paper over it. It will hallucinate around the gaps. You will not catch the failure until a customer does.",
+    "start": 118.3,
+    "end": 134.0
+  }
+]

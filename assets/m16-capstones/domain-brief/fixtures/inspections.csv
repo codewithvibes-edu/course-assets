@@ -1,0 +1,4 @@
+permit_id,inspection_date,inspection_type,result,notes
+P-2026-00921,2026-05-14,foundation,passed,Footings approved; framing is next on the schedule
+P-2026-00415,2026-05-14,framing,failed,Shear-wall nailing off schedule; reinspection required
+P-2026-00702,2026-05-13,final,passed,Certificate of occupancy cleared

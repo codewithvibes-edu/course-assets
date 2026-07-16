@@ -1,0 +1,85 @@
+# Eval set for the multi-platform content pipeline.
+# Each case has:
+#   - id            : unique identifier
+#   - input         : segment ID (must exist in fixtures/transcript.json)
+#   - expected_signal : what good output looks like (qualitative)
+#   - pass_criteria : deterministic checks
+#
+# Run via: python example.py --eval
+
+suite: content-pipeline-v1
+model_under_test: claude-sonnet-4-7
+
+cases:
+  - id: scorer-data-thesis
+    input:
+      segment_id: seg-002
+    expected_signal: |
+      Strong on-thesis claim ("data layer, not model"). Should score 7-10.
+    pass_criteria:
+      score_min: 7
+      score_max: 10
+
+  - id: scorer-filler-flagged
+    input:
+      segment_id: seg-004
+    expected_signal: |
+      Filler-heavy throwaway ("um yeah uh like anyway"). Should score 1-3.
+    pass_criteria:
+      score_max: 3
+
+  - id: scorer-opening-hook
+    input:
+      segment_id: seg-001
+    expected_signal: |
+      Tight opening hook about transformer math. Should score 7-10.
+    pass_criteria:
+      score_min: 7
+
+  - id: scorer-concrete-example
+    input:
+      segment_id: seg-005
+    expected_signal: |
+      Specific story with numbers (30 percent wrong, 3 months stale). Should score 6-10.
+    pass_criteria:
+      score_min: 6
+
+  - id: caption-x-length
+    input:
+      segment_id: seg-002
+      platform: x
+    expected_signal: |
+      X caption is <=240 chars, no hashtags, no fluff.
+    pass_criteria:
+      caption_max_len: 240
+      caption_must_not_contain: ["#"]
+
+  - id: caption-ig-hashtags
+    input:
+      segment_id: seg-002
+      platform: ig
+    expected_signal: |
+      IG caption ends with hashtags after a blank line.
+    pass_criteria:
+      caption_must_contain_any: ["#"]
+
+  - id: caption-linkedin-length
+    input:
+      segment_id: seg-007
+      platform: linkedin
+    expected_signal: |
+      LinkedIn caption is longer than 80 chars (allows multi-paragraph),
+      contains no hashtags.
+    pass_criteria:
+      caption_min_len: 80
+      caption_must_not_contain: ["#"]
+
+  - id: pipeline-review-queue
+    input:
+      segment_id: any
+    expected_signal: |
+      Pipeline run produces a review_queue entry for every requested platform,
+      none of which auto-publish.
+    pass_criteria:
+      review_queue_min: 3
+      review_status_all: pending_human_review

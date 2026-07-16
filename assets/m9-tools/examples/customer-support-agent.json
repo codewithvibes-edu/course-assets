@@ -1,0 +1,68 @@
+{
+  "$comment": "Example tool subset for a customer support agent. 5 tools chosen for the customer-support context. Read-write balance: 3 read tools, 1 write (note), 1 high-stakes (refund) gated behind human approval.",
+  "agent_name": "customer_support_specialist",
+  "system_prompt": "You are a customer support specialist. Use the tools to look up customer context before drafting responses. For irreversible actions (refunds), propose the action and wait for human approval before submitting. Cite specific account details from get_account_detail when responding to customers.",
+  "tools": [
+    {
+      "name": "lookup_customer",
+      "description": "Find a customer record by email or customer_id. Returns name, plan, signup_date, last_active, and current account status. Use this first when the customer's identity is not yet established.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "customer_id": { "type": "string" }
+        },
+        "required": []
+      }
+    },
+    {
+      "name": "get_account_detail",
+      "description": "Full account record: contacts, contract dates, MRR, recent activity. Read-only.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "customer_id": { "type": "string" }
+        },
+        "required": ["customer_id"]
+      }
+    },
+    {
+      "name": "check_billing_status",
+      "description": "Get current billing status for a customer.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "customer_id": { "type": "string" }
+        },
+        "required": ["customer_id"]
+      }
+    },
+    {
+      "name": "add_account_note",
+      "description": "Add a note to a customer account. Audit logged.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "customer_id": { "type": "string" },
+          "note": { "type": "string" },
+          "visibility": { "type": "string", "enum": ["team", "private"] }
+        },
+        "required": ["customer_id", "note"]
+      }
+    },
+    {
+      "name": "process_refund",
+      "description": "Issue a refund. REQUIRES HUMAN APPROVAL. The agent should propose details and wait for approval.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "customer_id": { "type": "string" },
+          "charge_id": { "type": "string" },
+          "amount_cents": { "type": "integer" },
+          "reason": { "type": "string" }
+        },
+        "required": ["customer_id", "charge_id", "amount_cents", "reason"]
+      }
+    }
+  ]
+}

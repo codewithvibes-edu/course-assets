@@ -1,0 +1,254 @@
+{
+  "_metadata": {
+    "schema_version": "1.0",
+    "last_updated": "2026-05-15",
+    "description": "Parameterized routing-table template covering models, jobs, and fallback chains. Drop in your provider keys and job names. Pricing fields are 2026-snapshot placeholders; refresh them against vendor pricing pages before relying on them.",
+    "verify_pricing_urls": {
+      "anthropic": "https://claude.com/pricing#api",
+      "openai": "https://openai.com/api/pricing",
+      "google_gemini": "https://ai.google.dev/pricing",
+      "together": "https://www.together.ai/pricing",
+      "fireworks": "https://fireworks.ai/pricing",
+      "groq": "https://groq.com/pricing",
+      "openrouter": "https://openrouter.ai/models"
+    },
+    "notes": [
+      "Every cost_per_1m_input_usd / cost_per_1m_output_usd value is a 2026 snapshot. Verify before trusting.",
+      "expected_cost_per_call_usd is computed from the listed token assumptions, not measured. Replace with real averages from your trace logs once you have them.",
+      "Open-weights provider pricing churns more than frontier API pricing. Check quarterly at minimum.",
+      "Self-hosted entries set per-token cost to 0 by convention; real cost is capex plus power and is tracked separately."
+    ]
+  },
+
+  "models": {
+    "haiku-fast": {
+      "provider": "anthropic",
+      "name": "claude-haiku-4-5",
+      "class": "small",
+      "cost_per_1m_input_usd": 0.8,
+      "cost_per_1m_output_usd": 4.0,
+      "avg_latency_ms": 400,
+      "context_window_tokens": 200000,
+      "verify_pricing_url": "https://claude.com/pricing#api"
+    },
+    "sonnet-balanced": {
+      "provider": "anthropic",
+      "name": "claude-sonnet-4-6",
+      "class": "mid",
+      "cost_per_1m_input_usd": 3.0,
+      "cost_per_1m_output_usd": 15.0,
+      "avg_latency_ms": 800,
+      "context_window_tokens": 200000,
+      "verify_pricing_url": "https://claude.com/pricing#api"
+    },
+    "opus-frontier": {
+      "provider": "anthropic",
+      "name": "claude-opus-4-7",
+      "class": "frontier",
+      "cost_per_1m_input_usd": 15.0,
+      "cost_per_1m_output_usd": 75.0,
+      "avg_latency_ms": 1200,
+      "context_window_tokens": 200000,
+      "verify_pricing_url": "https://claude.com/pricing#api"
+    },
+    "gpt-frontier": {
+      "provider": "openai",
+      "name": "gpt-5",
+      "class": "frontier",
+      "cost_per_1m_input_usd": 10.0,
+      "cost_per_1m_output_usd": 40.0,
+      "avg_latency_ms": 1100,
+      "context_window_tokens": 256000,
+      "verify_pricing_url": "https://openai.com/api/pricing"
+    },
+    "gemini-mid": {
+      "provider": "google",
+      "name": "gemini-2-5-pro",
+      "class": "mid",
+      "cost_per_1m_input_usd": 2.5,
+      "cost_per_1m_output_usd": 10.0,
+      "avg_latency_ms": 900,
+      "context_window_tokens": 1000000,
+      "verify_pricing_url": "https://ai.google.dev/pricing"
+    },
+    "llama-open-mid": {
+      "provider": "together",
+      "name": "llama-3-3-70b-instruct",
+      "class": "mid",
+      "cost_per_1m_input_usd": 0.6,
+      "cost_per_1m_output_usd": 0.6,
+      "avg_latency_ms": 700,
+      "context_window_tokens": 128000,
+      "verify_pricing_url": "https://www.together.ai/pricing"
+    },
+    "qwen-coder-hosted": {
+      "provider": "fireworks",
+      "name": "qwen-coder-32b-instruct",
+      "class": "mid-code",
+      "cost_per_1m_input_usd": 0.9,
+      "cost_per_1m_output_usd": 0.9,
+      "avg_latency_ms": 650,
+      "context_window_tokens": 128000,
+      "verify_pricing_url": "https://fireworks.ai/pricing"
+    },
+    "groq-fast-mid": {
+      "provider": "groq",
+      "name": "llama-3-3-70b-versatile",
+      "class": "mid",
+      "cost_per_1m_input_usd": 0.59,
+      "cost_per_1m_output_usd": 0.79,
+      "avg_latency_ms": 250,
+      "context_window_tokens": 128000,
+      "verify_pricing_url": "https://groq.com/pricing"
+    },
+    "qwen-coder-local": {
+      "provider": "local",
+      "name": "qwen-coder-32b-instruct",
+      "class": "small-local",
+      "cost_per_1m_input_usd": 0,
+      "cost_per_1m_output_usd": 0,
+      "avg_latency_ms": 600,
+      "context_window_tokens": 128000,
+      "verify_pricing_url": "n/a: local hardware; capex plus power tracked separately"
+    },
+    "embed-local": {
+      "provider": "local",
+      "name": "bge-large-en-v1-5",
+      "class": "embedding-local",
+      "cost_per_1m_input_usd": 0,
+      "cost_per_1m_output_usd": 0,
+      "avg_latency_ms": 150,
+      "context_window_tokens": 512,
+      "verify_pricing_url": "n/a: local hardware"
+    }
+  },
+
+  "fallback_chains": {
+    "anthropic_then_open": {
+      "description": "Try Anthropic primary, fall back to a hosted open-weights mid-size on rate-limit or 5xx.",
+      "steps": [
+        { "model_id": "sonnet-balanced", "retry_on_rate_limit": true, "timeout_ms": 12000 },
+        { "model_id": "llama-open-mid", "retry_on_rate_limit": false, "timeout_ms": 12000 }
+      ]
+    },
+    "frontier_quality_chain": {
+      "description": "For jobs where quality matters most. Primary frontier model, secondary cross-vendor frontier, no degraded text fallback.",
+      "steps": [
+        { "model_id": "opus-frontier", "retry_on_rate_limit": true, "timeout_ms": 20000 },
+        { "model_id": "gpt-frontier", "retry_on_rate_limit": false, "timeout_ms": 20000 }
+      ]
+    },
+    "code_chain": {
+      "description": "Code generation chain. Self-hosted Qwen Coder primary; hosted Qwen Coder secondary; mid-frontier last.",
+      "steps": [
+        { "model_id": "qwen-coder-local", "retry_on_rate_limit": false, "timeout_ms": 15000 },
+        { "model_id": "qwen-coder-hosted", "retry_on_rate_limit": true, "timeout_ms": 15000 },
+        { "model_id": "sonnet-balanced", "retry_on_rate_limit": true, "timeout_ms": 15000 }
+      ]
+    },
+    "low_latency_chain": {
+      "description": "Latency-sensitive chain. Groq fast inference primary, Anthropic Haiku secondary.",
+      "steps": [
+        { "model_id": "groq-fast-mid", "retry_on_rate_limit": true, "timeout_ms": 3000 },
+        { "model_id": "haiku-fast", "retry_on_rate_limit": false, "timeout_ms": 4000 }
+      ]
+    },
+    "raise_immediately": {
+      "description": "No fallback. Job refuses to degrade. Caller decides what to do.",
+      "steps": [{ "model_id": "opus-frontier", "retry_on_rate_limit": true, "timeout_ms": 20000 }]
+    }
+  },
+
+  "jobs": {
+    "ticket_classification": {
+      "description": "Inbound support ticket classification into a fixed taxonomy.",
+      "primary_model_id": "haiku-fast",
+      "fallback_chain_id": "low_latency_chain",
+      "temperature": 0,
+      "max_tokens": 200,
+      "tokens_per_call_assumed": { "input": 800, "output": 200 },
+      "expected_cost_per_call_usd": 0.0014,
+      "_cost_note": "0.0014 = (800/1M)*0.80 + (200/1M)*4.00. 2026 Anthropic Haiku pricing; verify."
+    },
+    "conversation_summarization": {
+      "description": "Summarize a multi-turn conversation transcript for human review.",
+      "primary_model_id": "sonnet-balanced",
+      "fallback_chain_id": "anthropic_then_open",
+      "temperature": 0,
+      "max_tokens": 500,
+      "tokens_per_call_assumed": { "input": 3000, "output": 400 },
+      "expected_cost_per_call_usd": 0.015,
+      "_cost_note": "0.0150 = (3000/1M)*3.00 + (400/1M)*15.00. 2026 Anthropic Sonnet pricing; verify."
+    },
+    "structured_extraction": {
+      "description": "Extract structured fields (sender, amount, due date, etc.) from unstructured documents.",
+      "primary_model_id": "sonnet-balanced",
+      "fallback_chain_id": "anthropic_then_open",
+      "temperature": 0,
+      "max_tokens": 800,
+      "tokens_per_call_assumed": { "input": 2500, "output": 600 },
+      "expected_cost_per_call_usd": 0.0165,
+      "_cost_note": "0.0165 = (2500/1M)*3.00 + (600/1M)*15.00. Pin temperature at 0 for deterministic JSON output."
+    },
+    "customer_support_draft": {
+      "description": "Draft a customer-facing response that requires tone control and product knowledge.",
+      "primary_model_id": "opus-frontier",
+      "fallback_chain_id": "frontier_quality_chain",
+      "temperature": 0.3,
+      "max_tokens": 1000,
+      "tokens_per_call_assumed": { "input": 2000, "output": 800 },
+      "expected_cost_per_call_usd": 0.09,
+      "_cost_note": "0.0900 = (2000/1M)*15.00 + (800/1M)*75.00. Frontier reserved for the customer-facing surface; verify pricing."
+    },
+    "code_review_comment": {
+      "description": "Generate a code review comment given a diff and the surrounding file context.",
+      "primary_model_id": "qwen-coder-local",
+      "fallback_chain_id": "code_chain",
+      "temperature": 0,
+      "max_tokens": 1500,
+      "tokens_per_call_assumed": { "input": 4000, "output": 700 },
+      "expected_cost_per_call_usd": 0.0,
+      "_cost_note": "Self-hosted primary; marginal per-call cost is approximately zero. Capex plus power tracked separately."
+    },
+    "content_drafting": {
+      "description": "Draft long-form content given an outline and a tone reference.",
+      "primary_model_id": "sonnet-balanced",
+      "fallback_chain_id": "anthropic_then_open",
+      "temperature": 0.7,
+      "max_tokens": 2000,
+      "tokens_per_call_assumed": { "input": 1500, "output": 1500 },
+      "expected_cost_per_call_usd": 0.027,
+      "_cost_note": "0.0270 = (1500/1M)*3.00 + (1500/1M)*15.00. Temperature 0.7 because tone variety matters here."
+    },
+    "long_doc_synthesis": {
+      "description": "Read a long document (10k-100k tokens) and produce a structured synthesis.",
+      "primary_model_id": "gemini-mid",
+      "fallback_chain_id": "anthropic_then_open",
+      "temperature": 0,
+      "max_tokens": 2000,
+      "tokens_per_call_assumed": { "input": 40000, "output": 1500 },
+      "expected_cost_per_call_usd": 0.115,
+      "_cost_note": "0.1150 = (40000/1M)*2.50 + (1500/1M)*10.00. Gemini chosen for 1M-token context; verify Google pricing."
+    },
+    "high_stakes_structured_output": {
+      "description": "Structured output where a wrong answer has irreversible cost (financial, legal, compliance).",
+      "primary_model_id": "opus-frontier",
+      "fallback_chain_id": "raise_immediately",
+      "temperature": 0,
+      "max_tokens": 500,
+      "tokens_per_call_assumed": { "input": 2000, "output": 400 },
+      "expected_cost_per_call_usd": 0.06,
+      "_cost_note": "0.0600 = (2000/1M)*15.00 + (400/1M)*75.00. Refuses to degrade; raise instead of falling back."
+    },
+    "embedding_generation": {
+      "description": "Embedding generation for retrieval. High volume, latency tolerant.",
+      "primary_model_id": "embed-local",
+      "fallback_chain_id": null,
+      "temperature": null,
+      "max_tokens": null,
+      "tokens_per_call_assumed": { "input": 400, "output": 0 },
+      "expected_cost_per_call_usd": 0.0,
+      "_cost_note": "Self-hosted embedding model. No per-call dollar cost."
+    }
+  }
+}

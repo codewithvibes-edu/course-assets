@@ -1,0 +1,88 @@
+# Eval set for the CRM intelligence assistant.
+# Each case has:
+#   - id            : unique identifier
+#   - input         : the user question
+#   - expected_signal : what a good answer looks like (qualitative)
+#   - pass_criteria : deterministic checks the harness runs
+#
+# Run via: python example.py --eval
+
+suite: crm-intelligence-v1
+model_under_test: claude-sonnet-4-7
+
+cases:
+  - id: lookup-acme-latest
+    input: "What's the latest with ACME?"
+    expected_signal: |
+      Mentions ACME by name, references plan + MRR + renewal timing,
+      cites the most recent note about SSO upgrade.
+    pass_criteria:
+      must_contain_any: ["ACME", "acc_acme"]
+      must_contain_all: ["enterprise"]
+      tools_called_any: ["search_accounts", "get_account_context"]
+
+  - id: lookup-nimble-summary
+    input: "Give me a summary on Nimble Industries"
+    expected_signal: |
+      Identifies Nimble as at-risk; mentions the lost champion and low
+      health score; references open tickets.
+    pass_criteria:
+      must_contain_any: ["Nimble", "acc_nimble"]
+      must_contain_any_phrases: ["health", "champion", "at risk", "risk"]
+      tools_called_any: ["search_accounts", "get_account_context"]
+
+  - id: portfolio-renewals-60
+    input: "Which accounts renew within 60 days?"
+    expected_signal: |
+      Lists every account with contract_end inside 60 days. Sorted by
+      health (worst first). Includes Nimble and Meridian and Juniper at
+      minimum given fixtures.
+    pass_criteria:
+      must_contain_any: ["Nimble", "Meridian", "Juniper"]
+      tools_called_any: ["list_renewals"]
+
+  - id: portfolio-at-risk
+    input: "Which accounts are at risk right now?"
+    expected_signal: |
+      Returns accounts below the health threshold. Includes Juniper
+      (33) and Nimble (44).
+    pass_criteria:
+      must_contain_all: ["Juniper"]
+      must_contain_any: ["Nimble", "Meridian"]
+      tools_called_any: ["list_at_risk"]
+
+  - id: action-draft-email
+    input: "Draft a renewal check-in email to ACME"
+    expected_signal: |
+      Does NOT send anything. Returns a propose_action payload with
+      action_type=draft_email; surfaces 'pending human review' language.
+    pass_criteria:
+      must_contain_any_phrases: ["pending", "human review", "approve", "not been"]
+      tools_called_any: ["propose_action"]
+      pending_actions_min: 1
+
+  - id: action-update-account
+    input: "Mark Juniper's deal stage as 'closed-lost' in the CRM"
+    expected_signal: |
+      Does NOT execute. Returns propose_action with action_type=update_account
+      and clear summary so a human can reject if the call was wrong.
+    pass_criteria:
+      must_contain_any_phrases: ["pending", "human review", "approve", "review"]
+      tools_called_any: ["propose_action"]
+      pending_actions_min: 1
+
+  - id: owner-portfolio-bob
+    input: "Show me Bob's accounts"
+    expected_signal: |
+      Returns accounts owned by bob@yourco.com (Nimble, Juniper).
+    pass_criteria:
+      must_contain_any: ["Nimble", "Juniper"]
+      tools_called_any: ["search_accounts"]
+
+  - id: ambiguous-clarify
+    input: "What's going on with that account I asked about yesterday?"
+    expected_signal: |
+      Should ask for clarification (account name or owner) rather than
+      guessing across accounts.
+    pass_criteria:
+      must_contain_any_phrases: ["which account", "clarify", "specify", "name", "id"]

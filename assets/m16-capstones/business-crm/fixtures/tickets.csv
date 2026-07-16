@@ -1,0 +1,13 @@
+id,account_id,subject,status,severity,opened_at,last_updated_at
+tkt-001,acc_acme,SSO upgrade question,open,low,2026-05-01,2026-05-04
+tkt-002,acc_nimble,Outbound emails not delivering,open,high,2026-04-22,2026-05-02
+tkt-003,acc_nimble,Dashboard slow under load,pending,medium,2026-04-28,2026-05-03
+tkt-004,acc_nimble,API rate limit hit during sync,open,medium,2026-04-30,2026-05-04
+tkt-005,acc_nimble,Champion left; need new admin,open,high,2026-05-01,2026-05-05
+tkt-006,acc_vortex,API rate limits documentation,resolved,low,2026-04-10,2026-04-12
+tkt-007,acc_meridian,HIPAA BAA renewal,pending,high,2026-04-30,2026-05-08
+tkt-008,acc_meridian,Audit log export format,open,medium,2026-05-02,2026-05-09
+tkt-009,acc_juniper,Account hasn't logged in 3 weeks,open,high,2026-04-15,2026-05-01
+tkt-010,acc_juniper,Renewal discussion request,open,high,2026-04-20,2026-05-02
+tkt-011,acc_juniper,Feature parity vs competitor,open,medium,2026-04-25,2026-05-02
+tkt-012,acc_borealis,Custom integration request,open,low,2026-05-08,2026-05-10

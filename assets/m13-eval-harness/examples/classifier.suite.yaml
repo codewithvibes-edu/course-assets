@@ -1,0 +1,64 @@
+suite_name: "ticket-classifier"
+prompt_module: "examples.prompts"
+prompt_function: "classify"
+
+cases:
+  - id: "billing-001"
+    input: "My card was charged twice for the same plan."
+    deterministic:
+      - type: json_schema
+        schema_path: "examples/classifier.schema.json"
+      - type: field_value
+        field: "category"
+        expected: "billing"
+      - type: field_in_set
+        field: "urgency"
+        allowed: ["medium", "high"]
+    model_graded:
+      - rubric: "Is the suggested_action appropriate for billing duplicate charges?"
+        passing_threshold: 0.7
+
+  - id: "feature-001"
+    input: "Could you add a dark mode option?"
+    deterministic:
+      - type: json_schema
+        schema_path: "examples/classifier.schema.json"
+      - type: field_value
+        field: "category"
+        expected: "feature_request"
+      - type: field_value
+        field: "urgency"
+        expected: "low"
+
+  - id: "outage-001"
+    input: "Service has been down for 30 minutes during business hours."
+    deterministic:
+      - type: json_schema
+        schema_path: "examples/classifier.schema.json"
+      - type: field_in_set
+        field: "category"
+        allowed: ["bug", "outage", "technical"]
+      - type: field_in_set
+        field: "urgency"
+        allowed: ["high", "critical"]
+    model_graded:
+      - rubric: "Does the response treat business-hour outage as a high or critical urgency event?"
+        passing_threshold: 0.8
+
+  - id: "vague-001"
+    input: "Hi, just checking in."
+    deterministic:
+      - type: json_schema
+        schema_path: "examples/classifier.schema.json"
+      - type: field_value
+        field: "urgency"
+        expected: "low"
+
+  - id: "edge-001"
+    input: "I love this product but the export feature could use one tiny improvement."
+    deterministic:
+      - type: json_schema
+        schema_path: "examples/classifier.schema.json"
+      - type: field_in_set
+        field: "category"
+        allowed: ["feature_request", "feedback"]

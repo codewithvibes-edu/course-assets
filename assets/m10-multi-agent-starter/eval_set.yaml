@@ -1,0 +1,64 @@
+suite_name: support-multi-agent
+prompt_module: graph_runner
+prompt_function: run_for_eval
+
+cases:
+  - id: billing-duplicate
+    input:
+      user_input: "I was charged twice for the same plan this week."
+      customer_email: "alice@example.com"
+    expected:
+      classification: billing
+      pending_action_type: refund
+
+  - id: billing-update-card
+    input:
+      user_input: "I need to update my card; the old one expired."
+      customer_email: "bob@example.com"
+    expected:
+      classification: billing
+      response_must_contain: "billing portal"
+
+  - id: technical-outage
+    input:
+      user_input: "I'm getting 502 errors on the web app every few requests."
+      customer_email: "bob@example.com"
+    expected:
+      classification: technical
+
+  - id: technical-database
+    input:
+      user_input: "Our reports keep timing out on database queries."
+      customer_email: "alice@example.com"
+    expected:
+      classification: technical
+
+  - id: escalation-legal
+    input:
+      user_input: "If you don't refund this charge I'm calling my lawyer."
+      customer_email: "alice@example.com"
+    expected:
+      classification: escalation
+      pending_action_type: escalation_posted
+
+  - id: escalation-security
+    input:
+      user_input: "I think there's been a data breach on my account."
+      customer_email: "bob@example.com"
+    expected:
+      classification: escalation
+
+  - id: general-vague
+    input:
+      user_input: "Hi, just checking in."
+      customer_email: "alice@example.com"
+    expected:
+      classification: general
+
+  - id: general-mixed
+    input:
+      user_input: "Could you tell me more about my plan?"
+      customer_email: "bob@example.com"
+    expected:
+      classification: billing
+      # Plan questions are billing-flavored; supervisor should catch this
