@@ -1,0 +1,12 @@
+{
+  "model": "mock-1",
+  "messages": [
+    {"role": "user", "content": "What is an API?"},
+    {"role": "assistant", "content": "An agreed-on way for programs to talk."}
+  ],
+  "options": {
+    "max_tokens": 200,
+    "stream": false
+  },
+  "tags": ["first", "lab"]
+}

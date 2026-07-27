@@ -1,0 +1,204 @@
+{
+  "recorded_on": "2026-07-25",
+  "tool": "tesseract 5.5.3",
+  "frames_read": 12,
+  "results": [
+    {
+      "file": "frames/periodic-001.png",
+      "source_time": 0.0,
+      "reasons": [
+        "periodic"
+      ],
+      "ocr_lines": [
+        "Maple + Finch Garden Supply",
+        "Order lookup",
+        "Order 4217",
+        "Status: Processing",
+        "Placed: July 14",
+        "Items: 1",
+        "support.maple-finch.example"
+      ],
+      "needs_review": false
+    },
+    {
+      "file": "frames/periodic-002.png",
+      "source_time": 10.0,
+      "reasons": [
+        "periodic"
+      ],
+      "ocr_lines": [
+        "Maple + Finch Garden Supply",
+        "Order lookup",
+        "Order 4217",
+        "Status: Processing",
+        "Placed: July 14",
+        "Items: 1",
+        "support.maple-finch.example"
+      ],
+      "needs_review": false
+    },
+    {
+      "file": "frames/scene-001.png",
+      "source_time": 19.1,
+      "reasons": [
+        "scene-change"
+      ],
+      "ocr_lines": [
+        "Maple + Finch Garden Supply",
+        "Please hold",
+        "Your agent is checking the order record."
+      ],
+      "needs_review": false
+    },
+    {
+      "file": "frames/periodic-003.png",
+      "source_time": 20.0,
+      "reasons": [
+        "periodic"
+      ],
+      "ocr_lines": [
+        "Maple + Finch Garden Supply",
+        "Order 4217, detail",
+        "1 x Cedar Planter Box, 24 inch",
+        "Placed: July 14",
+        "Packed: July 15",
+        "Carrier pickup: not recorded",
+        "Reshipment policy: a stalled order reships free,",
+        "or refunds in full. Customer chooses."
+      ],
+      "needs_review": false
+    },
+    {
+      "file": "frames/scene-002.png",
+      "source_time": 22.2,
+      "reasons": [
+        "scene-change"
+      ],
+      "ocr_lines": [
+        "Maple + Finch Garden Supply",
+        "Order 4217, detail",
+        "1 x Cedar Planter Box, 24 inch",
+        "Placed: July 14",
+        "Packed: July 15",
+        "Carrier pickup: not recorded",
+        "Reshipment policy: a stalled order reships free,",
+        "or refunds in full. Customer chooses."
+      ],
+      "needs_review": false
+    },
+    {
+      "file": "frames/periodic-004.png",
+      "source_time": 30.0,
+      "reasons": [
+        "periodic"
+      ],
+      "ocr_lines": [
+        "Maple + Finch Garden Supply",
+        "Fulfillment timeline, order 4217",
+        "Placed July 14 Pe",
+        "Packed July 15 Pe",
+        "Carrier pickup missed fC",
+        "Delivery pending |"
+      ],
+      "needs_review": false
+    },
+    {
+      "file": "frames/scene-003.png",
+      "source_time": 31.1,
+      "reasons": [
+        "scene-change"
+      ],
+      "ocr_lines": [
+        "Maple + Finch Garden Supply",
+        "Fulfillment timeline, order 4217",
+        "Placed July 14",
+        "Packed July 15 Pe",
+        "Carrier pickup missed fC",
+        "Delivery pending |"
+      ],
+      "needs_review": false
+    },
+    {
+      "file": "frames/cue-000.png",
+      "source_time": 32.0,
+      "reasons": [
+        "cue at 32.0s"
+      ],
+      "ocr_lines": [
+        "Maple + Finch Garden Supply",
+        "Fulfillment timeline, order 4217",
+        "Placed July 14 |",
+        "Packed July 15 Pe",
+        "Carrier pickup missed fC",
+        "Delivery pending |"
+      ],
+      "needs_review": false
+    },
+    {
+      "file": "frames/periodic-005.png",
+      "source_time": 40.0,
+      "reasons": [
+        "periodic"
+      ],
+      "ocr_lines": [
+        "Maple + Finch Garden Supply",
+        "Fulfillment timeline, order 4217",
+        "Placed July 14 Pe",
+        "Packed July 15 Pe",
+        "Carrier pickup missed fC",
+        "Delivery pending |"
+      ],
+      "needs_review": false
+    },
+    {
+      "file": "frames/periodic-006.png",
+      "source_time": 50.0,
+      "reasons": [
+        "periodic"
+      ],
+      "ocr_lines": [
+        "Maple + Finch Garden Supply",
+        "Fulfillment timeline, order 4217",
+        "Placed July 14 Pe",
+        "Packed July 15 Pe",
+        "Carrier pickup missed Ce",
+        "Delivery pending ni"
+      ],
+      "needs_review": false
+    },
+    {
+      "file": "frames/scene-004.png",
+      "source_time": 58.5,
+      "reasons": [
+        "scene-change"
+      ],
+      "ocr_lines": [
+        "Maple + Finch Garden Supply",
+        "Resolution",
+        "Reshipment scheduled",
+        "Ships: tomorrow, two day service",
+        "Charge: none",
+        "Tracking number: emailed tonight"
+      ],
+      "needs_review": false
+    },
+    {
+      "file": "frames/periodic-007.png",
+      "source_time": 60.0,
+      "reasons": [
+        "cue at 60.0s",
+        "periodic"
+      ],
+      "ocr_lines": [
+        "Maple + Finch Garden Supply",
+        "Resolution",
+        "Reshipment scheduled",
+        "Ships: tomorrow, two day service",
+        "Charge: none",
+        "Tracking number: emailed tonight"
+      ],
+      "needs_review": false
+    }
+  ],
+  "reading": "Treat every ocr_lines entry as a claim to verify against its frame. Where a number matters, the frame image is the ground truth and the manifest's source_time is how you cite it."
+}

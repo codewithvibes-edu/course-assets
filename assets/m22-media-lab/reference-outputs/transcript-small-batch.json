@@ -1,0 +1,1031 @@
+{
+  "recorded_on": "2026-07-25",
+  "tool": "faster-whisper, model small, int8 on cpu",
+  "mode": "batch",
+  "language": "en",
+  "model_load_seconds": 0.5,
+  "first_result_seconds": 3.6,
+  "total_seconds": 8.8,
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 5.86,
+      "text": "Thanks for calling Maple and Finch Garden Supply. This is Riley. What can I help you with today?",
+      "words": [
+        {
+          "word": "Thanks",
+          "start": 0.0,
+          "end": 0.28,
+          "probability": 0.417
+        },
+        {
+          "word": "for",
+          "start": 0.28,
+          "end": 0.62,
+          "probability": 0.988
+        },
+        {
+          "word": "calling",
+          "start": 0.62,
+          "end": 1.06,
+          "probability": 0.975
+        },
+        {
+          "word": "Maple",
+          "start": 1.06,
+          "end": 1.4,
+          "probability": 0.945
+        },
+        {
+          "word": "and",
+          "start": 1.4,
+          "end": 1.64,
+          "probability": 0.619
+        },
+        {
+          "word": "Finch",
+          "start": 1.64,
+          "end": 2.02,
+          "probability": 0.983
+        },
+        {
+          "word": "Garden",
+          "start": 2.02,
+          "end": 2.3,
+          "probability": 0.665
+        },
+        {
+          "word": "Supply.",
+          "start": 2.3,
+          "end": 2.9,
+          "probability": 0.778
+        },
+        {
+          "word": "This",
+          "start": 3.14,
+          "end": 3.32,
+          "probability": 0.991
+        },
+        {
+          "word": "is",
+          "start": 3.32,
+          "end": 3.48,
+          "probability": 0.994
+        },
+        {
+          "word": "Riley.",
+          "start": 3.48,
+          "end": 3.74,
+          "probability": 0.935
+        },
+        {
+          "word": "What",
+          "start": 4.3,
+          "end": 4.52,
+          "probability": 0.994
+        },
+        {
+          "word": "can",
+          "start": 4.52,
+          "end": 4.74,
+          "probability": 0.993
+        },
+        {
+          "word": "I",
+          "start": 4.74,
+          "end": 4.88,
+          "probability": 0.982
+        },
+        {
+          "word": "help",
+          "start": 4.88,
+          "end": 5.14,
+          "probability": 0.997
+        },
+        {
+          "word": "you",
+          "start": 5.14,
+          "end": 5.3,
+          "probability": 0.991
+        },
+        {
+          "word": "with",
+          "start": 5.3,
+          "end": 5.52,
+          "probability": 0.997
+        },
+        {
+          "word": "today?",
+          "start": 5.52,
+          "end": 5.86,
+          "probability": 0.986
+        }
+      ]
+    },
+    {
+      "start": 6.96,
+      "end": 14.56,
+      "text": "Hi Riley. I placed an order last week. Order 4217, and the status page still says processing.",
+      "words": [
+        {
+          "word": "Hi",
+          "start": 6.96,
+          "end": 7.44,
+          "probability": 0.979
+        },
+        {
+          "word": "Riley.",
+          "start": 7.44,
+          "end": 7.78,
+          "probability": 0.739
+        },
+        {
+          "word": "I",
+          "start": 8.32,
+          "end": 8.52,
+          "probability": 0.996
+        },
+        {
+          "word": "placed",
+          "start": 8.52,
+          "end": 8.84,
+          "probability": 0.98
+        },
+        {
+          "word": "an",
+          "start": 8.84,
+          "end": 9.06,
+          "probability": 0.992
+        },
+        {
+          "word": "order",
+          "start": 9.06,
+          "end": 9.26,
+          "probability": 0.987
+        },
+        {
+          "word": "last",
+          "start": 9.26,
+          "end": 9.62,
+          "probability": 0.998
+        },
+        {
+          "word": "week.",
+          "start": 9.62,
+          "end": 9.96,
+          "probability": 0.999
+        },
+        {
+          "word": "Order",
+          "start": 10.38,
+          "end": 10.52,
+          "probability": 0.992
+        },
+        {
+          "word": "4217,",
+          "start": 10.52,
+          "end": 11.8,
+          "probability": 0.95
+        },
+        {
+          "word": "and",
+          "start": 12.14,
+          "end": 12.36,
+          "probability": 0.992
+        },
+        {
+          "word": "the",
+          "start": 12.36,
+          "end": 12.56,
+          "probability": 0.995
+        },
+        {
+          "word": "status",
+          "start": 12.56,
+          "end": 12.84,
+          "probability": 0.943
+        },
+        {
+          "word": "page",
+          "start": 12.84,
+          "end": 13.34,
+          "probability": 0.986
+        },
+        {
+          "word": "still",
+          "start": 13.34,
+          "end": 13.74,
+          "probability": 0.99
+        },
+        {
+          "word": "says",
+          "start": 13.74,
+          "end": 14.02,
+          "probability": 0.999
+        },
+        {
+          "word": "processing.",
+          "start": 14.02,
+          "end": 14.56,
+          "probability": 0.406
+        }
+      ]
+    },
+    {
+      "start": 15.44,
+      "end": 18.06,
+      "text": "Let me pull that up. One moment.",
+      "words": [
+        {
+          "word": "Let",
+          "start": 15.44,
+          "end": 16.08,
+          "probability": 0.99
+        },
+        {
+          "word": "me",
+          "start": 16.08,
+          "end": 16.28,
+          "probability": 0.999
+        },
+        {
+          "word": "pull",
+          "start": 16.28,
+          "end": 16.56,
+          "probability": 0.997
+        },
+        {
+          "word": "that",
+          "start": 16.56,
+          "end": 16.74,
+          "probability": 0.981
+        },
+        {
+          "word": "up.",
+          "start": 16.74,
+          "end": 17.06,
+          "probability": 0.998
+        },
+        {
+          "word": "One",
+          "start": 17.46,
+          "end": 17.72,
+          "probability": 0.984
+        },
+        {
+          "word": "moment.",
+          "start": 17.72,
+          "end": 18.06,
+          "probability": 0.992
+        }
+      ]
+    },
+    {
+      "start": 22.08,
+      "end": 29.5,
+      "text": "Okay, I see it. Order 4217, one-seater planter box, placed July 14th.",
+      "words": [
+        {
+          "word": "Okay,",
+          "start": 22.08,
+          "end": 22.6,
+          "probability": 0.529
+        },
+        {
+          "word": "I",
+          "start": 22.92,
+          "end": 23.06,
+          "probability": 0.997
+        },
+        {
+          "word": "see",
+          "start": 23.06,
+          "end": 23.28,
+          "probability": 0.999
+        },
+        {
+          "word": "it.",
+          "start": 23.28,
+          "end": 23.52,
+          "probability": 0.999
+        },
+        {
+          "word": "Order",
+          "start": 23.94,
+          "end": 24.18,
+          "probability": 0.998
+        },
+        {
+          "word": "4217,",
+          "start": 24.18,
+          "end": 25.44,
+          "probability": 0.996
+        },
+        {
+          "word": "one",
+          "start": 25.78,
+          "end": 26.0,
+          "probability": 0.838
+        },
+        {
+          "word": "-seater",
+          "start": 26.0,
+          "end": 26.32,
+          "probability": 0.743
+        },
+        {
+          "word": "planter",
+          "start": 26.32,
+          "end": 26.92,
+          "probability": 0.896
+        },
+        {
+          "word": "box,",
+          "start": 26.92,
+          "end": 27.3,
+          "probability": 0.998
+        },
+        {
+          "word": "placed",
+          "start": 27.68,
+          "end": 27.96,
+          "probability": 0.952
+        },
+        {
+          "word": "July",
+          "start": 27.96,
+          "end": 28.3,
+          "probability": 0.968
+        },
+        {
+          "word": "14th.",
+          "start": 28.3,
+          "end": 29.5,
+          "probability": 0.97
+        }
+      ]
+    },
+    {
+      "start": 29.7,
+      "end": 30.12,
+      "text": "Right.",
+      "words": [
+        {
+          "word": "Right.",
+          "start": 29.7,
+          "end": 30.12,
+          "probability": 0.977
+        }
+      ]
+    },
+    {
+      "start": 31.0,
+      "end": 36.96,
+      "text": "The warehouse shows it packed, but the carrier never picked it up. That is why the status is stuck.",
+      "words": [
+        {
+          "word": "The",
+          "start": 31.0,
+          "end": 31.3,
+          "probability": 0.194
+        },
+        {
+          "word": "warehouse",
+          "start": 31.3,
+          "end": 31.62,
+          "probability": 0.961
+        },
+        {
+          "word": "shows",
+          "start": 31.62,
+          "end": 32.06,
+          "probability": 0.962
+        },
+        {
+          "word": "it",
+          "start": 32.06,
+          "end": 32.34,
+          "probability": 0.984
+        },
+        {
+          "word": "packed,",
+          "start": 32.34,
+          "end": 32.7,
+          "probability": 0.855
+        },
+        {
+          "word": "but",
+          "start": 33.02,
+          "end": 33.2,
+          "probability": 0.989
+        },
+        {
+          "word": "the",
+          "start": 33.2,
+          "end": 33.38,
+          "probability": 0.991
+        },
+        {
+          "word": "carrier",
+          "start": 33.38,
+          "end": 33.74,
+          "probability": 0.979
+        },
+        {
+          "word": "never",
+          "start": 33.74,
+          "end": 34.14,
+          "probability": 0.996
+        },
+        {
+          "word": "picked",
+          "start": 34.14,
+          "end": 34.48,
+          "probability": 0.997
+        },
+        {
+          "word": "it",
+          "start": 34.48,
+          "end": 34.68,
+          "probability": 0.994
+        },
+        {
+          "word": "up.",
+          "start": 34.68,
+          "end": 34.9,
+          "probability": 0.999
+        },
+        {
+          "word": "That",
+          "start": 35.34,
+          "end": 35.54,
+          "probability": 0.989
+        },
+        {
+          "word": "is",
+          "start": 35.54,
+          "end": 35.68,
+          "probability": 0.967
+        },
+        {
+          "word": "why",
+          "start": 35.68,
+          "end": 35.86,
+          "probability": 0.998
+        },
+        {
+          "word": "the",
+          "start": 35.86,
+          "end": 36.02,
+          "probability": 0.99
+        },
+        {
+          "word": "status",
+          "start": 36.02,
+          "end": 36.38,
+          "probability": 0.994
+        },
+        {
+          "word": "is",
+          "start": 36.38,
+          "end": 36.64,
+          "probability": 0.947
+        },
+        {
+          "word": "stuck.",
+          "start": 36.64,
+          "end": 36.96,
+          "probability": 0.995
+        }
+      ]
+    },
+    {
+      "start": 37.66,
+      "end": 39.16,
+      "text": "So is it lost, or?",
+      "words": [
+        {
+          "word": "So",
+          "start": 37.66,
+          "end": 38.26,
+          "probability": 0.614
+        },
+        {
+          "word": "is",
+          "start": 38.26,
+          "end": 38.44,
+          "probability": 0.86
+        },
+        {
+          "word": "it",
+          "start": 38.44,
+          "end": 38.6,
+          "probability": 0.996
+        },
+        {
+          "word": "lost,",
+          "start": 38.6,
+          "end": 38.9,
+          "probability": 0.968
+        },
+        {
+          "word": "or?",
+          "start": 39.14,
+          "end": 39.16,
+          "probability": 0.973
+        }
+      ]
+    },
+    {
+      "start": 39.16,
+      "end": 40.92,
+      "text": "No, no, it is still on the shelf.",
+      "words": [
+        {
+          "word": "No,",
+          "start": 39.16,
+          "end": 39.16,
+          "probability": 0.356
+        },
+        {
+          "word": "no,",
+          "start": 39.32,
+          "end": 39.48,
+          "probability": 0.776
+        },
+        {
+          "word": "it",
+          "start": 39.7,
+          "end": 39.88,
+          "probability": 0.988
+        },
+        {
+          "word": "is",
+          "start": 39.88,
+          "end": 40.02,
+          "probability": 0.906
+        },
+        {
+          "word": "still",
+          "start": 40.02,
+          "end": 40.24,
+          "probability": 0.998
+        },
+        {
+          "word": "on",
+          "start": 40.24,
+          "end": 40.48,
+          "probability": 0.999
+        },
+        {
+          "word": "the",
+          "start": 40.48,
+          "end": 40.62,
+          "probability": 0.997
+        },
+        {
+          "word": "shelf.",
+          "start": 40.62,
+          "end": 40.92,
+          "probability": 0.997
+        }
+      ]
+    },
+    {
+      "start": 41.92,
+      "end": 44.4,
+      "text": "Okay, so what happens now?",
+      "words": [
+        {
+          "word": "Okay,",
+          "start": 41.92,
+          "end": 42.52,
+          "probability": 0.662
+        },
+        {
+          "word": "so",
+          "start": 43.04,
+          "end": 43.34,
+          "probability": 0.993
+        },
+        {
+          "word": "what",
+          "start": 43.34,
+          "end": 43.56,
+          "probability": 0.994
+        },
+        {
+          "word": "happens",
+          "start": 43.56,
+          "end": 44.0,
+          "probability": 0.932
+        },
+        {
+          "word": "now?",
+          "start": 44.0,
+          "end": 44.4,
+          "probability": 0.997
+        }
+      ]
+    },
+    {
+      "start": 45.34,
+      "end": 52.08,
+      "text": "Two options. I can reship it tomorrow with two-day shipping at no charge, or refund the whole order today.",
+      "words": [
+        {
+          "word": "Two",
+          "start": 45.34,
+          "end": 45.6,
+          "probability": 0.918
+        },
+        {
+          "word": "options.",
+          "start": 45.6,
+          "end": 46.0,
+          "probability": 0.997
+        },
+        {
+          "word": "I",
+          "start": 46.7,
+          "end": 46.82,
+          "probability": 0.995
+        },
+        {
+          "word": "can",
+          "start": 46.82,
+          "end": 47.08,
+          "probability": 0.996
+        },
+        {
+          "word": "reship",
+          "start": 47.08,
+          "end": 47.48,
+          "probability": 0.743
+        },
+        {
+          "word": "it",
+          "start": 47.48,
+          "end": 47.66,
+          "probability": 0.998
+        },
+        {
+          "word": "tomorrow",
+          "start": 47.66,
+          "end": 48.0,
+          "probability": 0.976
+        },
+        {
+          "word": "with",
+          "start": 48.0,
+          "end": 48.38,
+          "probability": 0.995
+        },
+        {
+          "word": "two",
+          "start": 48.38,
+          "end": 48.62,
+          "probability": 0.889
+        },
+        {
+          "word": "-day",
+          "start": 48.62,
+          "end": 48.86,
+          "probability": 0.657
+        },
+        {
+          "word": "shipping",
+          "start": 48.86,
+          "end": 49.26,
+          "probability": 0.998
+        },
+        {
+          "word": "at",
+          "start": 49.26,
+          "end": 49.5,
+          "probability": 0.968
+        },
+        {
+          "word": "no",
+          "start": 49.5,
+          "end": 49.7,
+          "probability": 0.99
+        },
+        {
+          "word": "charge,",
+          "start": 49.7,
+          "end": 50.14,
+          "probability": 0.996
+        },
+        {
+          "word": "or",
+          "start": 50.44,
+          "end": 50.62,
+          "probability": 0.997
+        },
+        {
+          "word": "refund",
+          "start": 50.62,
+          "end": 50.94,
+          "probability": 0.794
+        },
+        {
+          "word": "the",
+          "start": 50.94,
+          "end": 51.2,
+          "probability": 0.683
+        },
+        {
+          "word": "whole",
+          "start": 51.2,
+          "end": 51.44,
+          "probability": 0.916
+        },
+        {
+          "word": "order",
+          "start": 51.44,
+          "end": 51.7,
+          "probability": 0.998
+        },
+        {
+          "word": "today.",
+          "start": 51.7,
+          "end": 52.08,
+          "probability": 0.983
+        }
+      ]
+    },
+    {
+      "start": 54.62,
+      "end": 57.52,
+      "text": "Reship it. I still want the planter.",
+      "words": [
+        {
+          "word": "Reship",
+          "start": 54.62,
+          "end": 55.2,
+          "probability": 0.811
+        },
+        {
+          "word": "it.",
+          "start": 55.2,
+          "end": 55.46,
+          "probability": 0.998
+        },
+        {
+          "word": "I",
+          "start": 55.9,
+          "end": 56.12,
+          "probability": 0.999
+        },
+        {
+          "word": "still",
+          "start": 56.12,
+          "end": 56.42,
+          "probability": 0.997
+        },
+        {
+          "word": "want",
+          "start": 56.42,
+          "end": 56.72,
+          "probability": 0.998
+        },
+        {
+          "word": "the",
+          "start": 56.72,
+          "end": 56.94,
+          "probability": 0.529
+        },
+        {
+          "word": "planter.",
+          "start": 56.94,
+          "end": 57.52,
+          "probability": 0.946
+        }
+      ]
+    },
+    {
+      "start": 58.4,
+      "end": 63.48,
+      "text": "Done. The new tracking number goes out to your email tonight. Anything else?",
+      "words": [
+        {
+          "word": "Done.",
+          "start": 58.4,
+          "end": 58.76,
+          "probability": 0.563
+        },
+        {
+          "word": "The",
+          "start": 59.34,
+          "end": 59.48,
+          "probability": 0.973
+        },
+        {
+          "word": "new",
+          "start": 59.48,
+          "end": 59.68,
+          "probability": 0.953
+        },
+        {
+          "word": "tracking",
+          "start": 59.68,
+          "end": 60.06,
+          "probability": 0.994
+        },
+        {
+          "word": "number",
+          "start": 60.06,
+          "end": 60.56,
+          "probability": 0.987
+        },
+        {
+          "word": "goes",
+          "start": 60.56,
+          "end": 60.92,
+          "probability": 0.994
+        },
+        {
+          "word": "out",
+          "start": 60.92,
+          "end": 61.14,
+          "probability": 0.985
+        },
+        {
+          "word": "to",
+          "start": 61.14,
+          "end": 61.34,
+          "probability": 0.915
+        },
+        {
+          "word": "your",
+          "start": 61.34,
+          "end": 61.48,
+          "probability": 0.984
+        },
+        {
+          "word": "email",
+          "start": 61.48,
+          "end": 61.72,
+          "probability": 0.945
+        },
+        {
+          "word": "tonight.",
+          "start": 61.72,
+          "end": 62.2,
+          "probability": 0.997
+        },
+        {
+          "word": "Anything",
+          "start": 62.78,
+          "end": 63.06,
+          "probability": 0.995
+        },
+        {
+          "word": "else?",
+          "start": 63.06,
+          "end": 63.48,
+          "probability": 0.997
+        }
+      ]
+    },
+    {
+      "start": 64.44,
+      "end": 66.86,
+      "text": "No, that covers it. Thanks.",
+      "words": [
+        {
+          "word": "No,",
+          "start": 64.44,
+          "end": 64.88,
+          "probability": 0.963
+        },
+        {
+          "word": "that",
+          "start": 65.12,
+          "end": 65.28,
+          "probability": 0.994
+        },
+        {
+          "word": "covers",
+          "start": 65.28,
+          "end": 65.7,
+          "probability": 0.997
+        },
+        {
+          "word": "it.",
+          "start": 65.7,
+          "end": 66.04,
+          "probability": 0.999
+        },
+        {
+          "word": "Thanks.",
+          "start": 66.56,
+          "end": 66.86,
+          "probability": 0.992
+        }
+      ]
+    },
+    {
+      "start": 67.7,
+      "end": 71.34,
+      "text": "Thanks for calling Maple and Finch. Have a good one.",
+      "words": [
+        {
+          "word": "Thanks",
+          "start": 67.7,
+          "end": 68.26,
+          "probability": 0.989
+        },
+        {
+          "word": "for",
+          "start": 68.26,
+          "end": 68.56,
+          "probability": 0.998
+        },
+        {
+          "word": "calling",
+          "start": 68.56,
+          "end": 68.98,
+          "probability": 0.996
+        },
+        {
+          "word": "Maple",
+          "start": 68.98,
+          "end": 69.32,
+          "probability": 0.919
+        },
+        {
+          "word": "and",
+          "start": 69.32,
+          "end": 69.56,
+          "probability": 0.167
+        },
+        {
+          "word": "Finch.",
+          "start": 69.56,
+          "end": 70.04,
+          "probability": 0.959
+        },
+        {
+          "word": "Have",
+          "start": 70.44,
+          "end": 70.68,
+          "probability": 0.997
+        },
+        {
+          "word": "a",
+          "start": 70.68,
+          "end": 70.84,
+          "probability": 0.998
+        },
+        {
+          "word": "good",
+          "start": 70.84,
+          "end": 70.98,
+          "probability": 0.997
+        },
+        {
+          "word": "one.",
+          "start": 70.98,
+          "end": 71.34,
+          "probability": 0.998
+        }
+      ]
+    }
+  ],
+  "word_count": 148,
+  "low_confidence_words": [
+    {
+      "word": "Thanks",
+      "start": 0.0,
+      "end": 0.28,
+      "probability": 0.417
+    },
+    {
+      "word": "processing.",
+      "start": 14.02,
+      "end": 14.56,
+      "probability": 0.406
+    },
+    {
+      "word": "The",
+      "start": 31.0,
+      "end": 31.3,
+      "probability": 0.194
+    },
+    {
+      "word": "No,",
+      "start": 39.16,
+      "end": 39.16,
+      "probability": 0.356
+    },
+    {
+      "word": "and",
+      "start": 69.32,
+      "end": 69.56,
+      "probability": 0.167
+    }
+  ],
+  "reading": "first_result_seconds versus total_seconds is the latency story: batch callers wait for total, stream consumers start reading at first result. low_confidence_words is the review queue for lesson 4; probability is prioritization evidence, not calibrated certainty."
+}

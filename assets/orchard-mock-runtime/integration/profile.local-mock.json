@@ -1,0 +1,11 @@
+{
+  "local_mock": {
+    "adapter": "local",
+    "base_url": "http://127.0.0.1:8133",
+    "model": "orchard-3b-instruct",
+    "privacy_class": "local-only",
+    "secret_env": null,
+    "capabilities_note": "text and streaming true; structured output, tools, and image input false; declared in the adapter, last tested 2026-07-24",
+    "route_note": "exercise-only mock route: the Orchard runtime is a course fixture, so this profile proves swap mechanics and can never support a model-quality claim"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "model": "mock-1",
+  "stream": True,
+  "stop": None,
+  "input": "This file was printed by Python, not written as JSON."
+}

@@ -1,0 +1,5 @@
+{
+  "model": "mock-1"
+  "input": "What is an API?",
+  "max_tokens": 200
+}

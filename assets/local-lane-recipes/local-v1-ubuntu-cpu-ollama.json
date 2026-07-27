@@ -1,0 +1,146 @@
+{
+  "id": "local-v1-ubuntu-cpu-ollama",
+  "title": "Cell E runtime: Ollama with the pinned small model on Ubuntu 24.04, CPU only",
+  "purpose": "The required m23 runtime path for Cell E. Installs the dated v1 runtime as a system service, pulls the pinned small instruct model, proves first prompt, CPU residency, loopback, direct API, stop, and undo. Frozen fixture task: ticket classification (plan 06 amendment 3b-1). This cell trades speed for running anywhere, on purpose: same model, same commands, slower tokens, and the record says so instead of apologizing. Status is CANARY: authored 2026-07-25 from the verified Cell A record and the runtime's official documentation, not yet executed on this cell; it flips to current after a start-to-finish run on real Cell E hardware, at which point every expected output below gets replaced by the observed one.",
+  "operating_system": "Ubuntu 24.04 LTS native",
+  "shell": "bash",
+  "hardware_class": "Cell E: x86-64 CPU with 16 GB or more RAM",
+  "runtime": "Ollama",
+  "runtime_version": "Install current from the official source; record the version this cell actually installs at verify; version drift is the first suspect if output differs (Cell A verified 0.20.2 on 2026-07-25)",
+  "model_id": "qwen3.5:2b",
+  "model_revision": "324d162be6ca (Ollama digest); upstream Qwen/Qwen3.5-2B",
+  "format_or_quant": "Q8_0 GGUF via Ollama",
+  "prerequisites": [
+    "sudo access; curl installed (sudo apt install -y curl if missing)",
+    "About 3 GB of free disk and a network connection for the one-time model pull",
+    "License reviewed: Qwen3.5-2B is Apache 2.0 (verify at the upstream repository); no remote code runs, GGUF weights only"
+  ],
+  "estimated_download": "2.7 GB model artifact plus the runtime installer",
+  "estimated_duration": "25 to 35 minutes",
+  "steps": [
+    {
+      "purpose": "Download the official install script, read it, then run it. The read-before-run is Module 15's trust discipline: this script gets root.",
+      "cwd": null,
+      "command": "curl -fsSL https://ollama.com/install.sh -o /tmp/ollama-install.sh && less /tmp/ollama-install.sh && sh /tmp/ollama-install.sh",
+      "expected_output": "After you quit the pager, the script installs the runtime, creates a systemd service, and starts it. On this cell it will report a CPU-only install; that is correct here, not a failure.",
+      "stop": "Ctrl+C during install; rerunning the script is safe.",
+      "undo": "sudo systemctl disable --now ollama stops and disables the service; the runtime's official documentation carries the full uninstall (binary, service unit, ollama user, and model store).",
+      "common_errors": [
+        "curl: command not found: sudo apt install -y curl first."
+      ]
+    },
+    {
+      "purpose": "Record the exact runtime version and confirm the service is active.",
+      "cwd": null,
+      "command": "ollama --version && systemctl is-active ollama",
+      "expected_output": "A version string, then active. Cell A verified 0.20.2; record what this cell installs.",
+      "stop": "Nothing to stop.",
+      "undo": "Nothing to undo.",
+      "common_errors": [
+        "inactive: sudo systemctl start ollama, then recheck."
+      ]
+    },
+    {
+      "purpose": "Pull the pinned small instruct model and record its digest.",
+      "cwd": null,
+      "command": "ollama pull qwen3.5:2b",
+      "expected_output": "Layer downloads then success; ollama list then shows qwen3.5:2b with ID 324d162be6ca and size 2.7 GB.",
+      "stop": "Ctrl+C is safe; rerunning the pull resumes or verifies.",
+      "undo": "ollama rm qwen3.5:2b removes the model; a later pull downloads it again.",
+      "common_errors": [
+        "manifest unknown: check the exact model name and tag against the runtime's model library."
+      ]
+    },
+    {
+      "purpose": "First prompt. This model THINKS by default: the CLI streams its reasoning before the answer, and --hidethinking shows the answer alone. On CPU the reasoning tokens cost real seconds, which makes the thinking-off API options below matter even more on this cell.",
+      "cwd": null,
+      "command": "ollama run qwen3.5:2b --hidethinking \"In one sentence, what is a context window?\"",
+      "expected_output": "One short definition sentence. Cold start pauses while weights load into RAM; warm responses arrive at CPU pace, slower than the GPU cells and still entirely usable for short structured tasks. Record cold and warm timings at verify.",
+      "stop": "The one-shot form exits by itself; in interactive mode, /bye exits.",
+      "undo": "Nothing to undo; a prompt changes no state.",
+      "common_errors": [
+        "Long pause before output: the model is loading into RAM (cold start) or thinking; both are normal and longer on CPU.",
+        "Empty content when calling the OpenAI-compatible API with a max_tokens cap: the thinking consumed the whole budget. Send reasoning_effort none on /v1/chat/completions, or think false on the native /api/chat route."
+      ]
+    },
+    {
+      "purpose": "Verify where the model actually runs; on this cell the honest answer is the CPU, and the record proves it rather than assuming it.",
+      "cwd": null,
+      "command": "ollama ps",
+      "expected_output": "A row for qwen3.5:2b whose PROCESSOR column reports 100% CPU. That is correct for this cell, and it is the number that explains the pace of the previous step.",
+      "stop": "Nothing to stop; ps reads state.",
+      "undo": "Nothing to undo.",
+      "common_errors": [
+        "Empty list: the model unloaded after idling; run a prompt and check again."
+      ]
+    },
+    {
+      "purpose": "Confirm the service binds loopback only. The documented default bind is 127.0.0.1:11434; anything else means an OLLAMA_HOST override, usually via a systemd drop-in.",
+      "cwd": null,
+      "command": "ss -ltnp | grep 11434",
+      "expected_output": "One listener on 127.0.0.1:11434. A 0.0.0.0:11434 or [::]:11434 line means the service listens on EVERY interface: treat that as the m23-6 exposure drill, find the override (systemctl cat ollama shows drop-ins), and decide on purpose.",
+      "stop": "Nothing to stop; ss reads state.",
+      "undo": "Nothing to undo.",
+      "common_errors": [
+        "No output: the service is not running; start it and retry."
+      ]
+    },
+    {
+      "purpose": "Prove the HTTP surface with a direct request before any application code.",
+      "cwd": null,
+      "command": "python3 -c \"import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:11434/v1/models', timeout=10).read().decode())\"",
+      "expected_output": "A JSON model list whose data array includes an entry with id qwen3.5:2b.",
+      "stop": "Nothing to stop; the request returns immediately.",
+      "undo": "Nothing to undo; a GET changes no state.",
+      "common_errors": [
+        "Connection refused: the service is stopped; start it and retry."
+      ]
+    },
+    {
+      "purpose": "Practice a clean stop and restart of a serve process you own, without touching the system service: run a second instance on loopback at another port, verify its bind, then stop it.",
+      "cwd": null,
+      "command": "OLLAMA_HOST=127.0.0.1:11500 ollama serve",
+      "expected_output": "The serve process logs startup and stays attached; in a second terminal, ss -ltnp | grep 11500 shows 127.0.0.1:11500 only, and curl -s http://127.0.0.1:11500/api/version answers. Ctrl+C stops it cleanly.",
+      "stop": "Ctrl+C in the serve terminal.",
+      "undo": "Stopping it is the undo.",
+      "common_errors": [
+        "bind: address already in use: pick another free port for the drill.",
+        "The drill instance lists no models: expected. The system service runs as its own user with its own model store; your user-run instance has a separate one. The drill is about binds and lifecycle, and the port and process are real either way."
+      ]
+    },
+    {
+      "purpose": "Unload the model from memory when finished; the artifact stays on disk.",
+      "cwd": null,
+      "command": "ollama stop qwen3.5:2b",
+      "expected_output": "No output; ollama ps no longer lists the model, and RAM is released.",
+      "stop": "This IS the unload.",
+      "undo": "The next prompt reloads it automatically.",
+      "common_errors": []
+    }
+  ],
+  "health_check": "ollama --version answers, systemctl is-active ollama says active, ollama ps shows 100% CPU while loaded, ss shows the loopback listener, and the /v1/models request lists qwen3.5:2b",
+  "test_request": "python3 -c \"import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:11434/v1/models', timeout=10).read().decode())\"",
+  "expected_result": "DESK EXPECTATION pending on-OS verify: the pinned model pulls with the recorded digest, answers a first prompt at CPU pace, serves loopback HTTP, and stops cleanly. Forced-CPU datapoint 2026-07-27 (a GPU-equipped Ubuntu 24.04 box, Ryzen 9 5900HX, 64 GB RAM, runtime 0.32.4, CPU load forced per-request with num_gpu 0, so NOT a real CPU-only cell run): course-scaffold smoke (the shipped m2 structured-output-classifier template instantiated with the frozen fixture schema) went 10 of 10 first-pass valid against every TicketClassification enum with classifications identical to the same box's GPU pass at temperature 0; ollama ps reported 100% CPU at 4096 context; warm responses averaged 6.4 s at about 19 tok/s versus 0.83 s at about 140 tok/s on GPU. Decoding held exactly as expected, only slower. Record this cell's own numbers at a real CPU-only verify.",
+  "expected_memory": "DESK ESTIMATE pending on-OS verify: roughly 4 GB of system RAM for weights plus KV cache at 4096 context, comfortable inside the 16 GB floor; replace with the observed number",
+  "validated_context": "4096, course-validated on Cell A; revalidate on this cell at verify",
+  "privacy_notes": [
+    "The tested path needs no account and no API key.",
+    "Documented default bind is loopback; the bind step verifies YOUR machine instead of trusting the default, and a wildcard bind is treated as the exposure drill.",
+    "The install script and the one-time model pull are the only network use in this recipe; prompts run locally.",
+    "This recipe proves the declared path on the tested date, not universal privacy for every plugin, setting, or future version."
+  ],
+  "known_failures": [
+    "Thinking consumes a capped token budget on the OpenAI-compatible route, returning empty content: send reasoning_effort none there, or think false on the native route; on CPU the wasted thinking seconds hurt twice.",
+    "A machine near the 16 GB floor with heavy applications open can swap during load; close the heavy applications or drop a model size per the fit rule.",
+    "Cold starts pause longer than on the GPU cells while weights load; not a hang.",
+    "OLLAMA_HOST set in a systemd drop-in changes the bind; the bind step and systemctl cat ollama catch it."
+  ],
+  "official_sources": [
+    "https://ollama.com/library/qwen3.5",
+    "https://huggingface.co/Qwen/Qwen3.5-2B",
+    "https://docs.ollama.com/faq"
+  ],
+  "last_verified": "2026-07-25",
+  "reviewer": "Code With Vibes course team",
+  "status": "canary"
+}

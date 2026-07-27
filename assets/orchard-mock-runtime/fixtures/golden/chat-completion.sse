@@ -1,0 +1,18 @@
+data: {"id":"mockreq_b5b56b90d7b4","object":"chat.completion.chunk","created":0,"model":"orchard-3b-instruct","choices":[{"index":0,"delta":{"content":"[COURSE "},"finish_reason":null}],"mock":true}
+
+data: {"id":"mockreq_b5b56b90d7b4","object":"chat.completion.chunk","created":0,"model":"orchard-3b-instruct","choices":[{"index":0,"delta":{"content":"MOCK, "},"finish_reason":null}],"mock":true}
+
+data: {"id":"mockreq_b5b56b90d7b4","object":"chat.completion.chunk","created":0,"model":"orchard-3b-instruct","choices":[{"index":0,"delta":{"content":"NOT "},"finish_reason":null}],"mock":true}
+
+data: {"id":"mockreq_b5b56b90d7b4","object":"chat.completion.chunk","created":0,"model":"orchard-3b-instruct","choices":[{"index":0,"delta":{"content":"MODEL "},"finish_reason":null}],"mock":true}
+
+data: {"id":"mockreq_b5b56b90d7b4","object":"chat.completion.chunk","created":0,"model":"orchard-3b-instruct","choices":[{"index":0,"delta":{"content":"OUTPUT]\n"},"finish_reason":null}],"mock":true}
+
+data: {"id":"mockreq_b5b56b90d7b4","object":"chat.completion.chunk","created":0,"model":"orchard-3b-instruct","choices":[{"index":0,"delta":{"content":"fixture=weekly-status "},"finish_reason":null}],"mock":true}
+
+data: {"id":"mockreq_b5b56b90d7b4","object":"chat.completion.chunk","created":0,"model":"orchard-3b-instruct","choices":[{"index":0,"delta":{"content":"summary-shape"},"finish_reason":null}],"mock":true}
+
+data: {"id":"mockreq_b5b56b90d7b4","object":"chat.completion.chunk","created":0,"model":"orchard-3b-instruct","choices":[{"index":0,"delta":{},"finish_reason":"stop"}],"usage":{"prompt_tokens":4,"completion_tokens":7,"total_tokens":11},"mock":{"thinking":false,"usage_unit":"whitespace_words","timing_source":"configured scenario"}}
+
+data: [DONE]
+

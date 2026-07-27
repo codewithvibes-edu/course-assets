@@ -1,0 +1,26 @@
+{
+  "id": "mockreq_ddf736aad568",
+  "object": "chat.completion",
+  "created": 0,
+  "model": "orchard-3b-instruct",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "[COURSE MOCK, NOT MODEL OUTPUT]\nfixture=weekly-status summary-shape"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4,
+    "completion_tokens": 7,
+    "total_tokens": 11
+  },
+  "mock": {
+    "thinking": false,
+    "usage_unit": "whitespace_words",
+    "timing_source": "configured scenario"
+  }
+}

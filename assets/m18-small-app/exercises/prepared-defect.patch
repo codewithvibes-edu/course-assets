@@ -1,0 +1,17 @@
+diff --git a/snippets.py b/snippets.py
+index acc722c..dda2e88 100644
+--- a/snippets.py
++++ b/snippets.py
+@@ -50,9 +50,11 @@ def add_snippet(store_path, text, tags):
+     entry = {
+         "id": next_id(entries),
+         "text": text.strip(),
+-        "tags": tags,
+         "created": date.today().isoformat(),
+     }
++    # keep the store compact: only write a tags key when there are tags
++    if tags:
++        entry["tags"] = tags
+     entries.append(entry)
+     save_store(store_path, entries)
+     return entry

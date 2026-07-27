@@ -1,0 +1,4 @@
+data: {"delta": "The weekly status covers "}
+data: {"delta": "ingestion and incidents, "}
+data: {delta: broken because someone hand-built this JSON}
+data: {"done": true, "usage": {"output_tokens": 11}}

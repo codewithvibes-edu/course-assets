@@ -1,0 +1,6 @@
+sku,name,quantity,unit_cost,last_counted
+ORC-001,Apple crates,140,12.50,2026-07-20
+ORC-002,Pear crates,80,14.00,2026-07-21
+ORC-003,Cherry flats,42,22.75,2026-05-02
+ORC-004,Peach boxes,65,16.25,2026-07-22
+ORC-005,Plum boxes,0,15.00,2026-07-19

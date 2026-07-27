@@ -1,0 +1,13 @@
+Weekly status, engineering, week 30.
+
+The ingestion pipeline moved to cursor-based pagination on Tuesday after
+the vendor deprecated offset queries. Nightly runs now finish in 14
+minutes, down from 41. Two incidents: the rate limiter fired during the
+Wednesday backfill (resolved by honoring Retry-After instead of konami
+retrying), and the staging database filled its disk Thursday because the
+old snapshots were never rotated. Snapshot rotation is now a cron job with
+a seven-day window.
+
+Open items: the report formatter still drops rows with missing dates
+silently, which contradicts the contract; fix is scoped for next week.
+Hiring: two systems candidates onsite Friday.

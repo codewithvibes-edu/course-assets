@@ -1,0 +1,5 @@
+reports/
+state/
+output/
+notifications.log
+__pycache__/

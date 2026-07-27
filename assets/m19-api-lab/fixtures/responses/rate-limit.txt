@@ -1,0 +1,14 @@
+HTTP/1.1 429 Too Many Requests
+Server: BaseHTTP/0.6 Python/3.9.6
+Date: Fri, 24 Jul 2026 23:17:42 GMT
+Content-Type: application/json
+Content-Length: 156
+X-Request-Id: req_5a50bf31d3c1
+Retry-After: 12
+
+{
+  "error": {
+    "type": "rate_limit_error",
+    "message": "Too many requests. Retry after 12 seconds. Your request was fine; your timing was not."
+  }
+}

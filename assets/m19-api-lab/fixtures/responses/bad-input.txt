@@ -1,0 +1,14 @@
+HTTP/1.1 400 Bad Request
+Server: BaseHTTP/0.6 Python/3.9.6
+Date: Fri, 24 Jul 2026 23:17:42 GMT
+Content-Type: application/json
+Content-Length: 134
+X-Request-Id: req_dd1800645526
+
+{
+  "error": {
+    "type": "invalid_request",
+    "message": "Field 'input' must be a string, got number.",
+    "param": "input"
+  }
+}

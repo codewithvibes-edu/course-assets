@@ -1,0 +1,20 @@
+{
+  "fixture": "maple-finch-support-call.mp4",
+  "synthetic": true,
+  "consent": "Synthetic recording. Both voices are macOS text-to-speech voices reading a script written for this course. No real person appears, no real customer data exists, the company is fictional.",
+  "retention": "Ships with the course indefinitely as a labeled synthetic fixture. Derived learner artifacts follow the deletion exercise in lesson 7.",
+  "generated_on": "2026-07-25",
+  "generator": "scripts/generate_fixture.py",
+  "platform": "Darwin 26.5.2",
+  "python": "3.9.6",
+  "ffmpeg": "ffmpeg version 8.1 Copyright (c) 2000-2026 the FFmpeg developers",
+  "voices": {
+    "agent": "Eddy (English (US))",
+    "caller": "Flo (English (US))"
+  },
+  "sha256": {
+    "maple-finch-support-call.mp4": "6906f8a9d543f00ce648fb1f0dedcb7219753f1a922820b45341ff5db4da2f49",
+    "timeline.json": "f7be315f591f89fbf25fd3002be85ca0b64c4df1b04378459f74562c5eaf4830"
+  },
+  "reproducibility": "Rerunning this script may not reproduce identical bytes; TTS voices change with macOS versions. The committed files are the frozen fixture, and these hashes identify them."
+}

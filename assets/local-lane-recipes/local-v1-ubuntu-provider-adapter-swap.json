@@ -1,0 +1,104 @@
+{
+  "id": "local-v1-ubuntu-provider-adapter-swap",
+  "title": "Ubuntu swap: the local connection enters your m21 registry by configuration",
+  "purpose": "The m24-3 command surface for Ubuntu 24.04 (Cells D and E): merge the local connection profile, run the unchanged application through hosted-or-fallback and local routes, and save checksum evidence that the application-code diff is empty. Assumes your m24-2 LocalProviderAdapter passes the shared contract suite and is registered in your registry; writing that adapter is the lesson, not this recipe. Status is CANARY: authored 2026-07-25 from the verified Cell A record (the commands are identical on bash), not yet executed on a real Ubuntu machine; it flips to current after a start-to-finish on-OS run. The pinned model's thinking behavior and its handling are documented below because they are the protocol deviation you will meet first.",
+  "operating_system": "Ubuntu 24.04 LTS native",
+  "shell": "bash",
+  "hardware_class": "Cell D or E (either Ubuntu runtime cell)",
+  "runtime": "Ollama",
+  "runtime_version": "0.20.2 (version verified on Cell A; record this cell's at verify)",
+  "model_id": "qwen3.5:2b",
+  "model_revision": "324d162be6ca (Ollama digest); upstream Qwen/Qwen3.5-2B",
+  "format_or_quant": "Q8_0 GGUF via Ollama",
+  "prerequisites": [
+    "The Cell D or Cell E runtime recipe completed: service running, model pulled",
+    "Your Module 21 project with the canonical types, registry, and contract suite",
+    "Your Module 24 LocalProviderAdapter registered under adapter ID local"
+  ],
+  "estimated_download": "none",
+  "estimated_duration": "25 to 35 minutes",
+  "steps": [
+    {
+      "purpose": "Probe the service before you involve the application, so you know which side failed.",
+      "cwd": null,
+      "command": "python3 -c \"import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:11434/v1/models', timeout=10).read().decode())\"",
+      "expected_output": "A JSON model list including qwen3.5:2b.",
+      "stop": "Nothing to stop.",
+      "undo": "Nothing to undo.",
+      "common_errors": [
+        "Connection refused: start the runtime service first (runtime recipe, step 1)."
+      ]
+    },
+    {
+      "purpose": "Gate on the contract suite: an adapter that has not passed does not get picked.",
+      "cwd": "your m21 project root",
+      "command": "python3 -m unittest discover -s tests -v",
+      "expected_output": "Every contract test passes, including the shared suite running against your local adapter. Record the suite file's checksum for the evidence.",
+      "stop": "Ctrl+C; rerun any time.",
+      "undo": "Nothing to undo; tests write no state.",
+      "common_errors": [
+        "Failures in normalized-error tests: your adapter maps the runtime's errors incompletely; fix the adapter, never the suite."
+      ]
+    },
+    {
+      "purpose": "Merge the local connection profile into your registry configuration, with a backup for the rollback step.",
+      "cwd": "your m21 project root",
+      "command": "cp src/profiles.json src/profiles.json.bak && python3 -c \"import json; p=json.load(open('src/profiles.json')); p['local_real']={'adapter':'local','base_url':'http://127.0.0.1:11434','model':'qwen3.5:2b','privacy_class':'local-only','secret_env':None}; json.dump(p, open('src/profiles.json','w'), indent=2)\"",
+      "expected_output": "No output; profiles.json now contains local_real and the backup exists.",
+      "stop": "Nothing to stop.",
+      "undo": "mv src/profiles.json.bak src/profiles.json restores the pre-merge registry.",
+      "common_errors": [
+        "KeyError or missing file: run from the project root that holds src/profiles.json."
+      ]
+    },
+    {
+      "purpose": "Run the UNCHANGED application through the local route by configuration alone.",
+      "cwd": "your m21 project root",
+      "command": "CWV_CONNECTION=local_real python3 app_swap_demo.py",
+      "expected_output": "connection: local_real, profile: adapter=local privacy_class=local-only, then a real content sentence with finish_reason complete and canonical usage fields. On Cell A the warm response took about half a second; record this cell's timing at verify.",
+      "stop": "The demo exits by itself.",
+      "undo": "Nothing to undo; the run writes no state.",
+      "common_errors": [
+        "Empty content with finish_reason length: the pinned model THINKS by default and the thinking consumed your output-token budget. Your adapter must send reasoning_effort none on the OpenAI-compatible route (or think false on the native route). This is the m24-1 lesson arriving on schedule: compatible is a claim you test.",
+        "failed: not_found: the profile model does not match a pulled model; check ollama list."
+      ]
+    },
+    {
+      "purpose": "Capture the checksum evidence: same application bytes on every route.",
+      "cwd": "your m21 project root",
+      "command": "python3 -c \"import hashlib; print('app', hashlib.sha256(open('app_swap_demo.py','rb').read()).hexdigest()); print('suite', hashlib.sha256(open('tests/test_adapter_contract.py','rb').read()).hexdigest())\"",
+      "expected_output": "Two checksums; the app checksum matches the value recorded before the merge, so the application-code diff is empty. Save both with the run outputs in your swap evidence.",
+      "stop": "Nothing to stop.",
+      "undo": "Nothing to undo.",
+      "common_errors": []
+    },
+    {
+      "purpose": "Prove the reversal: the previous route works again by configuration alone.",
+      "cwd": "your m21 project root",
+      "command": "CWV_CONNECTION=fallback python3 app_swap_demo.py",
+      "expected_output": "connection: fallback with the deterministic connection's output. The route change is one environment variable in both directions.",
+      "stop": "The demo exits by itself.",
+      "undo": "Restore the registry backup (step 3 undo) if you want the pre-merge state back; otherwise keep local_real for the eval recipe.",
+      "common_errors": []
+    }
+  ],
+  "health_check": "CWV_CONNECTION=local_real python3 app_swap_demo.py answers with adapter=local and finish_reason complete",
+  "test_request": "CWV_CONNECTION=local_real python3 app_swap_demo.py",
+  "expected_result": "DESK EXPECTATION pending on-OS verify: the same application file, byte for byte, answers through the local connection and back through the previous one with only CWV_CONNECTION changing. Evidence saved: profile, adapter ID, suite checksum, app checksum, canonical responses, empty diff.",
+  "expected_memory": "the loaded model's footprint from the runtime recipe; the swap itself adds nothing",
+  "validated_context": "4096, inherited from the runtime recipe (Cell A validated; revalidate at verify)",
+  "privacy_notes": [
+    "The local_real profile carries privacy_class local-only and secret_env null; there is no credential on this route.",
+    "No network use beyond loopback in any step of this recipe."
+  ],
+  "known_failures": [
+    "Thinking-by-default consumes capped token budgets on the compat route; see step 4 common errors.",
+    "An adapter registered but failing the suite: the swap is blocked by design until the suite passes."
+  ],
+  "official_sources": [
+    "https://ollama.com/library/qwen3.5"
+  ],
+  "last_verified": "2026-07-25",
+  "reviewer": "Code With Vibes course team",
+  "status": "canary"
+}

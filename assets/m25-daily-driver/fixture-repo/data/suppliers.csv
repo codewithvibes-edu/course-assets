@@ -1,0 +1,4 @@
+supplier_id,name,contact,active
+SUP-01,Ridgeline Orchards,orders@example.com,true
+SUP-02,Bluff Creek Farms,sales@example.com,true
+SUP-03,Hollow Tree Co-op,,true

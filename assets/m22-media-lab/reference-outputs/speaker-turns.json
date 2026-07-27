@@ -1,0 +1,123 @@
+{
+  "recorded_on": "2026-07-25",
+  "tool": "ECAPA embeddings plus agglomerative clustering, pipeline/diarize.py",
+  "speakers_requested": 2,
+  "window_seconds": 1.5,
+  "turns": [
+    {
+      "speaker": "speaker_00",
+      "start": 0.1,
+      "end": 6.2,
+      "windows": 7
+    },
+    {
+      "speaker": "speaker_01",
+      "start": 7.2,
+      "end": 15.0,
+      "windows": 9
+    },
+    {
+      "speaker": "speaker_00",
+      "start": 15.9,
+      "end": 18.4,
+      "windows": 3
+    },
+    {
+      "speaker": "speaker_00",
+      "start": 22.2,
+      "end": 29.2,
+      "windows": 9
+    },
+    {
+      "speaker": "speaker_01",
+      "start": 29.8,
+      "end": 30.4,
+      "windows": 1
+    },
+    {
+      "speaker": "speaker_00",
+      "start": 31.2,
+      "end": 37.2,
+      "windows": 6
+    },
+    {
+      "speaker": "speaker_01",
+      "start": 38.1,
+      "end": 39.6,
+      "windows": 1
+    },
+    {
+      "speaker": "speaker_00",
+      "start": 38.85,
+      "end": 41.2,
+      "windows": 3
+    },
+    {
+      "speaker": "speaker_01",
+      "start": 42.1,
+      "end": 44.6,
+      "windows": 3
+    },
+    {
+      "speaker": "speaker_00",
+      "start": 45.4,
+      "end": 52.4,
+      "windows": 8
+    },
+    {
+      "speaker": "speaker_01",
+      "start": 53.2,
+      "end": 53.7,
+      "windows": 1
+    },
+    {
+      "speaker": "speaker_01",
+      "start": 54.8,
+      "end": 57.7,
+      "windows": 3
+    },
+    {
+      "speaker": "speaker_00",
+      "start": 59.4,
+      "end": 63.8,
+      "windows": 5
+    },
+    {
+      "speaker": "speaker_01",
+      "start": 64.6,
+      "end": 67.2,
+      "windows": 3
+    },
+    {
+      "speaker": "speaker_00",
+      "start": 68.0,
+      "end": 71.5,
+      "windows": 4
+    }
+  ],
+  "review_queue": {
+    "short_turns": [
+      {
+        "speaker": "speaker_01",
+        "start": 29.8,
+        "end": 30.4,
+        "windows": 1
+      },
+      {
+        "speaker": "speaker_01",
+        "start": 38.1,
+        "end": 39.6,
+        "windows": 1
+      },
+      {
+        "speaker": "speaker_01",
+        "start": 53.2,
+        "end": 53.7,
+        "windows": 1
+      }
+    ],
+    "ambiguous_windows": [],
+    "note": "Review each flagged span against the audio, and for this fixture against fixture/call-script.md. Corrections keep the tool's label and add yours next to it; see lesson 5 in the module."
+  },
+  "reading": "Overlapping speech lands in one VAD region and gets whichever label wins the window, single-word turns can vanish into a neighbor, and one voice can split across labels. The review queue is where those show up."
+}

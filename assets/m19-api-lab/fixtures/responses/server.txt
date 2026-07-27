@@ -1,0 +1,13 @@
+HTTP/1.1 500 Internal Server Error
+Server: BaseHTTP/0.6 Python/3.9.6
+Date: Fri, 24 Jul 2026 23:17:42 GMT
+Content-Type: application/json
+Content-Length: 152
+X-Request-Id: req_a171ef53121a
+
+{
+  "error": {
+    "type": "server_error",
+    "message": "Internal error. Nothing you sent caused this. Quote the request ID when you report it."
+  }
+}

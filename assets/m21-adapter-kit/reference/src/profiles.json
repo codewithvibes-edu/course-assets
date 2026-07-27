@@ -1,0 +1,17 @@
+{
+  "primary": {
+    "adapter": "lab",
+    "base_url": "http://127.0.0.1:8124",
+    "model": "mock-1",
+    "privacy_class": "public",
+    "secret_env": "LAB_API_KEY",
+    "capabilities_note": "declared in the adapter, verified 2026-07-24"
+  },
+  "fallback": {
+    "adapter": "mock",
+    "model": "mock-deterministic-1",
+    "privacy_class": "local-only",
+    "secret_env": null,
+    "capabilities_note": "deterministic; nothing leaves the machine"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "corrections": [
+    {
+      "span": [25.78, 26.32],
+      "original": "one -seater",
+      "corrected": "one cedar",
+      "corrected_by": "Code With Vibes course team",
+      "reason": "Listened to 25.4-27.0 in the working copy; the agent says one cedar planter box, and the scripted fixture confirms it. Note the wrong word carried probability 0.743, above the review threshold; it was caught by reading, not by the queue."
+    }
+  ]
+}

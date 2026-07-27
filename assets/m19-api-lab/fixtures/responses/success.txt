@@ -1,0 +1,23 @@
+HTTP/1.1 200 OK
+Server: BaseHTTP/0.6 Python/3.9.6
+Date: Fri, 24 Jul 2026 23:17:42 GMT
+Content-Type: application/json
+Content-Length: 323
+X-Request-Id: req_32cd910dfd95
+
+{
+  "received": {
+    "method": "POST",
+    "path": "/v1/echo",
+    "content_type": "application/json",
+    "body": {
+      "model": "mock-1",
+      "input": "What is an API?"
+    }
+  },
+  "output": "Echo complete. Every field above came from your request.",
+  "usage": {
+    "input_tokens": 7,
+    "output_tokens": 9
+  }
+}

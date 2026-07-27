@@ -1,0 +1,16 @@
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "orchard-3b-instruct",
+      "object": "model",
+      "owned_by": "course-mock"
+    },
+    {
+      "id": "orchard-3b-instruct-canary",
+      "object": "model",
+      "owned_by": "course-mock"
+    }
+  ],
+  "mock": true
+}

@@ -1,0 +1,8 @@
+{
+  "model": "mock-1",
+  "options": {
+    "temperature": 0.2,
+    "max_tokens": 200,
+  },
+  "tags": ["first", "lab",]
+}

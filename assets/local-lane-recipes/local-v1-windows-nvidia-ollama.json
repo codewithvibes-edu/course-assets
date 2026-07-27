@@ -1,0 +1,149 @@
+{
+  "id": "local-v1-windows-nvidia-ollama",
+  "title": "Cell B runtime: Ollama with the pinned small model on Windows 11 with an NVIDIA GPU",
+  "purpose": "The required m23 runtime path for Cell B. Installs the dated v1 runtime, pulls the pinned small instruct model, proves first prompt, GPU residency, loopback, direct API, stop, and undo. Frozen fixture task: ticket classification (plan 06 amendment 3b-1). Verified start-to-finish on real Cell B hardware 2026-07-26, course-scaffold smoke rerun 2026-07-27; expected outputs below are the observed ones.",
+  "operating_system": "Windows 11 native",
+  "shell": "PowerShell",
+  "hardware_class": "Cell B: NVIDIA GPU with 8 GB or more VRAM and 16 GB system RAM",
+  "runtime": "Ollama",
+  "runtime_version": "Install current from the official source; verified on 0.32.3 on this cell 2026-07-26 (pre-existing install, so the winget step was not exercised); version drift is the first suspect if output differs (Cell A verified 0.20.2 on 2026-07-25)",
+  "model_id": "qwen3.5:2b",
+  "model_revision": "324d162be6ca (Ollama digest); upstream Qwen/Qwen3.5-2B",
+  "format_or_quant": "Q8_0 GGUF via Ollama",
+  "prerequisites": [
+    "A current NVIDIA driver: nvidia-smi runs in PowerShell and reports the GPU and driver version",
+    "winget available (standard on Windows 11), or the official installer from the runtime's download page",
+    "About 3 GB of free disk and a network connection for the one-time model pull",
+    "License reviewed: Qwen3.5-2B is Apache 2.0 (verify at the upstream repository); no remote code runs, GGUF weights only"
+  ],
+  "estimated_download": "2.7 GB model artifact plus the runtime installer",
+  "estimated_duration": "20 to 30 minutes",
+  "steps": [
+    {
+      "purpose": "Install the runtime from an official source. On Windows it runs as a background app for your user session and starts on login.",
+      "cwd": null,
+      "command": "winget install --id Ollama.Ollama -e",
+      "expected_output": "winget reports a successful install; the runtime's icon appears in the system tray. Reopen the terminal so PATH picks up the install.",
+      "stop": "Quit the tray application to stop the background service at any time.",
+      "undo": "winget uninstall --id Ollama.Ollama removes the runtime; the model store under your user profile survives until you delete it.",
+      "common_errors": [
+        "winget: command not found: install App Installer from the Microsoft Store, or use the official installer from the runtime's download page.",
+        "ollama not recognized after install: open a new terminal so PATH updates."
+      ]
+    },
+    {
+      "purpose": "Record the exact runtime version; the canary flips to current against a recorded version.",
+      "cwd": null,
+      "command": "ollama --version",
+      "expected_output": "A version string. Cell A verified 0.20.2; record what this cell installs.",
+      "stop": "Nothing to stop.",
+      "undo": "Nothing to undo.",
+      "common_errors": [
+        "not recognized: open a new terminal so PATH picks up the install."
+      ]
+    },
+    {
+      "purpose": "Pull the pinned small instruct model and record its digest.",
+      "cwd": null,
+      "command": "ollama pull qwen3.5:2b",
+      "expected_output": "Layer downloads then success; ollama list then shows qwen3.5:2b with ID 324d162be6ca and size 2.7 GB.",
+      "stop": "Ctrl+C is safe; rerunning the pull resumes or verifies.",
+      "undo": "ollama rm qwen3.5:2b removes the model; a later pull downloads it again.",
+      "common_errors": [
+        "manifest unknown: check the exact model name and tag against the runtime's model library."
+      ]
+    },
+    {
+      "purpose": "First prompt. This model THINKS by default: the CLI streams its reasoning before the answer, and --hidethinking shows the answer alone.",
+      "cwd": null,
+      "command": "ollama run qwen3.5:2b --hidethinking \"In one sentence, what is a context window?\"",
+      "expected_output": "One short definition sentence. First response after a cold start pauses while weights load; warm responses on an 8 GB class GPU should be fast. Record cold and warm timings at verify.",
+      "stop": "The one-shot form exits by itself; in interactive mode, /bye exits.",
+      "undo": "Nothing to undo; a prompt changes no state.",
+      "common_errors": [
+        "Long pause before output: the model is loading into VRAM (cold start) or thinking; both are normal.",
+        "Empty content when calling the OpenAI-compatible API with a max_tokens cap: the thinking consumed the whole budget. Send reasoning_effort none on /v1/chat/completions, or think false on the native /api/chat route."
+      ]
+    },
+    {
+      "purpose": "Verify GPU residency: this cell's required path runs the model on the GPU, and the runtime reports where a loaded model lives.",
+      "cwd": null,
+      "command": "ollama ps",
+      "expected_output": "A row for qwen3.5:2b whose PROCESSOR column reports 100% GPU. A CPU or split entry on this hardware means the driver or VRAM state needs attention before this cell's record can pass.",
+      "stop": "Nothing to stop; ps reads state.",
+      "undo": "Nothing to undo.",
+      "common_errors": [
+        "Empty list: the model unloaded after idling; run a prompt and check again.",
+        "CPU shown despite an NVIDIA GPU: check nvidia-smi works and the driver is current, then restart the runtime."
+      ]
+    },
+    {
+      "purpose": "Confirm the service binds loopback only. The documented default bind is 127.0.0.1:11434; anything else means your environment customized OLLAMA_HOST.",
+      "cwd": null,
+      "command": "Get-NetTCPConnection -LocalPort 11434 -State Listen | Select-Object LocalAddress,LocalPort,OwningProcess",
+      "expected_output": "A listener on 127.0.0.1 port 11434. A LocalAddress of 0.0.0.0 or :: means the service listens on EVERY interface: treat that as the m23-6 exposure drill, find the OLLAMA_HOST override, and decide on purpose.",
+      "stop": "Nothing to stop; the query reads state.",
+      "undo": "Nothing to undo.",
+      "common_errors": [
+        "No output: the service is not running; start the tray application and retry."
+      ]
+    },
+    {
+      "purpose": "Prove the HTTP surface with a direct request before any application code.",
+      "cwd": null,
+      "command": "Invoke-RestMethod http://127.0.0.1:11434/v1/models | ConvertTo-Json -Depth 4",
+      "expected_output": "A JSON model list whose data array includes an entry with id qwen3.5:2b.",
+      "stop": "Nothing to stop; the request returns immediately.",
+      "undo": "Nothing to undo; a GET changes no state.",
+      "common_errors": [
+        "Unable to connect: the service is stopped; start the tray application and retry."
+      ]
+    },
+    {
+      "purpose": "Practice a clean stop and restart of a serve process you own, without touching the session service: run a second instance on loopback at another port, verify its bind, then stop it.",
+      "cwd": null,
+      "command": "$env:OLLAMA_HOST=\"127.0.0.1:11500\"; ollama serve",
+      "expected_output": "The serve process logs startup and stays attached; in a second terminal, Get-NetTCPConnection -LocalPort 11500 -State Listen shows 127.0.0.1 only, and Invoke-RestMethod http://127.0.0.1:11500/api/version answers. Ctrl+C stops it cleanly. Close the terminal afterward so the OLLAMA_HOST variable does not leak into later commands.",
+      "stop": "Ctrl+C in the serve terminal.",
+      "undo": "Stopping it is the undo; it shares your user's model store and writes nothing new.",
+      "common_errors": [
+        "bind: address already in use: pick another free port for the drill."
+      ]
+    },
+    {
+      "purpose": "Unload the model from memory when finished; the artifact stays on disk.",
+      "cwd": null,
+      "command": "ollama stop qwen3.5:2b",
+      "expected_output": "No output; ollama ps no longer lists the model, and VRAM is released (visible in nvidia-smi).",
+      "stop": "This IS the unload.",
+      "undo": "The next prompt reloads it automatically.",
+      "common_errors": []
+    }
+  ],
+  "health_check": "ollama --version answers, ollama ps shows 100% GPU while loaded, the loopback listener is on 127.0.0.1:11434, and the /v1/models request lists qwen3.5:2b",
+  "test_request": "Invoke-RestMethod http://127.0.0.1:11434/v1/models | ConvertTo-Json -Depth 4",
+  "expected_result": "VERIFIED on Cell B hardware 2026-07-26 (i9-13900KF, RTX 4070 Ti 12 GB, 64 GB RAM, Windows 11 Home, runtime 0.32.3): the pinned model pulled with the recorded digest 324d162be6ca, answered a first CLI prompt (cold start about 61 s including first weight load and a full streamed answer), ran 100% GPU-resident at 4096 context, and stopped cleanly with VRAM released. Course-scaffold smoke 2026-07-27 (the shipped m2 structured-output-classifier template instantiated with the frozen fixture schema: inline schema block with the full enums, the two shipped few-shot examples, the template's one-retry rule; native /api/chat, think false, temperature 0; GPU idle at this rerun, unlike the shared-load 2026-07-26 timings): 10 of 10 first-pass responses valid against every TicketClassification enum, the retry rule never fired; fixture-expected category and urgency matched on 6 of 10 (oc-01 and oc-02 are few-shot members, so those two are memorization; the oc-10 injection case classified bug/critical, following the injected urgency); warm responses averaged 0.76 s at about 166 tok/s. The alternate-port serve drill was exercised for real on 2026-07-26: a user-run second instance bound 127.0.0.1:11500 only, answered /api/version, and stopped clean.",
+  "expected_memory": "2.4 GB model allocation reported by ollama ps at 4096 context; nvidia-smi showed about 3.3 GiB of VRAM taken by the load (5.3 GiB to 8.6 GiB on the 12 GB card, other desktop workload resident), observed 2026-07-26; inside the 8 GB floor",
+  "validated_context": "4096, confirmed on this cell 2026-07-26 (ollama ps reports context 4096)",
+  "privacy_notes": [
+    "The tested path needs no account and no API key.",
+    "Documented default bind is loopback; the bind step verifies YOUR machine instead of trusting the default, and a wildcard bind is treated as the exposure drill.",
+    "The one-time model pull is the only network use in this recipe; prompts run locally.",
+    "This recipe proves the declared path on the tested date, not universal privacy for every plugin, setting, or future version.",
+    "Verify-machine caveat 2026-07-26: the reviewer box carried a pre-existing runtime install (0.32.3, so step 1 was not exercised) and a pre-existing wildcard bind ([::]:11434, deliberate fleet configuration), so step 6 reported the every-interface listener and the exposure drill path was exercised for real; a clean install binds loopback. Timings were measured while a charting workload shared the GPU (about 5.3 GiB VRAM and 30 to 40% utilization at baseline)."
+  ],
+  "known_failures": [
+    "Thinking consumes a capped token budget on the OpenAI-compatible route, returning empty content: send reasoning_effort none there, or think false on the native route.",
+    "Model loads on CPU despite the GPU: stale or missing NVIDIA driver; nvidia-smi is the first check.",
+    "Cold starts pause several seconds while weights load; not a hang.",
+    "OLLAMA_HOST customized in the environment (including a leftover from the port drill) changes the bind; the bind step catches it."
+  ],
+  "official_sources": [
+    "https://ollama.com/library/qwen3.5",
+    "https://huggingface.co/Qwen/Qwen3.5-2B",
+    "https://docs.ollama.com/faq"
+  ],
+  "last_verified": "2026-07-27",
+  "reviewer": "Code With Vibes course team",
+  "status": "current"
+}

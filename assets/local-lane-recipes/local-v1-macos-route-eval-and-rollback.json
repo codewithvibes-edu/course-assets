@@ -1,0 +1,96 @@
+{
+  "id": "local-v1-macos-route-eval-and-rollback",
+  "title": "Cell A evaluation: compare routes on the frozen task, decide, and prove rollback",
+  "purpose": "The m24-5 and m24-6 command surface for macOS: run the frozen ten-case ticket-classification set through the local route, compare against your other route with your m13 harness, write the three-way verdict with a pre-written rollback line, and rehearse the rollback. The frozen task fixture is ticket classification (plan 06 amendment 3b-1); the ten cases ship in the course's eval fixture. Numbers you record are bounded observations on your machine and date, never a leaderboard claim.",
+  "operating_system": "macOS 13 or newer on Apple silicon",
+  "shell": "zsh or bash",
+  "hardware_class": "Cell A: Apple silicon, 8 GB or more unified memory",
+  "runtime": "Ollama",
+  "runtime_version": "0.20.2",
+  "model_id": "qwen3.5:2b",
+  "model_revision": "324d162be6ca (Ollama digest); upstream Qwen/Qwen3.5-2B",
+  "format_or_quant": "Q8_0 GGUF via Ollama",
+  "prerequisites": [
+    "The Cell A runtime and swap recipes completed",
+    "The course eval fixture (assets/orchard-mock-runtime/fixtures/eval-cases.json) for the ten frozen inputs and expected fields",
+    "Your Module 13 eval harness for scoring and blind pairwise review"
+  ],
+  "estimated_download": "none",
+  "estimated_duration": "45 to 60 minutes",
+  "steps": [
+    {
+      "purpose": "Run the ten frozen cases through the local route with thinking off and temperature zero, saving raw responses. The schema and enums come from the frozen fixture.",
+      "cwd": "the directory holding eval-cases.json",
+      "command": "python3 -c \"import json,time,urllib.request; cases=json.load(open('eval-cases.json'))['cases']; sys_p='You classify support tickets. Reply with ONLY a JSON object with fields: reasoning (string), urgency (low|medium|high|critical), category (billing|bug|feature_request|account|other), suggested_action (auto_reply|route_to_billing|escalate|human_review), confidence (0.0 to 1.0).';\nimport pathlib; out=[]\nfor c in cases:\n    p={'model':'qwen3.5:2b','stream':False,'think':False,'format':'json','options':{'temperature':0},'messages':[{'role':'system','content':sys_p},{'role':'user','content':c['input']}]}\n    r=urllib.request.Request('http://127.0.0.1:11434/api/chat',method='POST',data=json.dumps(p).encode(),headers={'Content-Type':'application/json'})\n    t=time.monotonic(); b=json.load(urllib.request.urlopen(r,timeout=120)); out.append({'case_id':c['case_id'],'seconds':round(time.monotonic()-t,2),'raw':b['message']['content']})\npathlib.Path('local-route-run.json').write_text(json.dumps(out,indent=2)); print('saved', len(out), 'responses')\"",
+      "expected_output": "saved 10 responses, written to local-route-run.json. Reviewer observation 2026-07-25: 10 of 10 responses parsed as valid JSON; first response a few seconds cold, then about one second each warm.",
+      "stop": "Ctrl+C; rerun from the top, the run is idempotent.",
+      "undo": "rm local-route-run.json.",
+      "common_errors": [
+        "Connection refused: start the runtime service.",
+        "Responses containing reasoning prose instead of JSON: confirm think false and format json are in the payload; both matter."
+      ]
+    },
+    {
+      "purpose": "Run the same ten inputs through your comparison route (hosted, or the mock fallback) with your harness, same prompt, same caps, changing only the route.",
+      "cwd": "your project root",
+      "command": "python3 your_m13_harness.py --route hosted --cases eval-cases.json --out hosted-route-run.json",
+      "expected_output": "A second saved run file with the same shape. The exact command is your harness's; what is fixed is the discipline: same inputs, same prompt version, same output cap, route as the only change.",
+      "stop": "Ctrl+C.",
+      "undo": "Remove the run file.",
+      "common_errors": [
+        "Different prompt or caps between routes: the comparison is void; rerun with everything held constant."
+      ]
+    },
+    {
+      "purpose": "Score both runs: exact-match and schema mechanics against the fixture's expected fields, then blind pairwise review with route names stripped, both directions.",
+      "cwd": "your project root",
+      "command": "python3 your_m13_harness.py --score local-route-run.json hosted-route-run.json --blind",
+      "expected_output": "Per-route parse rate, category and urgency match counts, failure categories per miss, and a pairwise sheet. Record time-to-first-token and generation observations separately with their dates.",
+      "stop": "Nothing to stop.",
+      "undo": "Nothing to undo; scoring reads run files.",
+      "common_errors": [
+        "Grading with route names visible: redo blind; knowing which answer came from which route is a thumb on the scale."
+      ]
+    },
+    {
+      "purpose": "Write the verdict before touching any config: default, optional route, or rejected, with thresholds and the rollback line decided now.",
+      "cwd": "your project root",
+      "command": "printf '%s\\n' '# Local_Route_Promotion_Decision' 'verdict: [default | optional-route | rejected]' 'threshold_used:' 'failure_categories_observed:' 'capacity_triggers:' 'fallback_policy:' 'rollback_criterion:' 'jobs_remaining_hosted_and_why:' 'review_date:' > Local_Route_Promotion_Decision.md",
+      "expected_output": "The decision file skeleton exists; fill every field from the scored evidence. A promotion without a pre-written rollback criterion is a hope with a deploy step.",
+      "stop": "Nothing to stop.",
+      "undo": "rm Local_Route_Promotion_Decision.md.",
+      "common_errors": []
+    },
+    {
+      "purpose": "Rehearse the rollback for real: restore the previous route by configuration, unload the local model, and rerun the smoke test.",
+      "cwd": "your m21 project root",
+      "command": "CWV_CONNECTION=fallback python3 app_swap_demo.py && ollama stop qwen3.5:2b",
+      "expected_output": "The application answers on the restored route, then the model unloads and its memory is released. Verified 2026-07-25: both commands complete cleanly; the route change is one environment variable.",
+      "stop": "The commands exit by themselves.",
+      "undo": "Select the local route again by configuration; the next request reloads the model automatically.",
+      "common_errors": [
+        "Stopping the runtime SERVICE instead of unloading the model: brew services stop ollama stops it for everything on the machine; the drill only needs the model unloaded."
+      ]
+    }
+  ],
+  "health_check": "local-route-run.json holds ten parsed responses and the decision file has no empty rollback_criterion field",
+  "test_request": "CWV_CONNECTION=fallback python3 app_swap_demo.py",
+  "expected_result": "Two complete run files, a blind-scored comparison with failure categories, a three-way verdict with a pre-written rollback line, and a rehearsed rollback trace. The record states which jobs remain hosted and why.",
+  "expected_memory": "the loaded model's footprint from the runtime recipe during runs; released by the unload step",
+  "validated_context": "4096, inherited from the runtime recipe",
+  "privacy_notes": [
+    "The ten fixture inputs are course-authored synthetic tickets; nothing sensitive leaves the machine on the local route.",
+    "If your comparison route is hosted, the same ten synthetic inputs are what crosses; use nothing else for this drill."
+  ],
+  "known_failures": [
+    "Thinking left on or format json omitted breaks parse rates; step 1 pins both.",
+    "Comparing runs made with different prompts, caps, or sampling: void, rerun.",
+    "Reading the ten-case result as a general model ranking: the claim discipline in m24-5 bounds every sentence to task, machine, and date."
+  ],
+  "official_sources": [
+    "https://ollama.com/library/qwen3.5"
+  ],
+  "last_verified": "2026-07-25",
+  "reviewer": "Code With Vibes course team",
+  "status": "current"
+}

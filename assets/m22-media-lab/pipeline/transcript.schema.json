@@ -1,0 +1,82 @@
+{
+  "$comment": "The m22 joined-transcript schema, version 1. This file documents the contract; pipeline/join_transcript.py enforces the required shape with its own validator so the kit adds no schema dependency. Consent and retention are required fields on purpose: a media data product that cannot say whether it may exist is not usable data.",
+  "schema_version": 1,
+  "type": "object",
+  "required": ["schema_version", "source", "provenance", "segments", "visual_events", "review", "derived_artifacts"],
+  "properties": {
+    "schema_version": { "type": "integer" },
+    "source": {
+      "type": "object",
+      "required": ["file", "sha256", "synthetic", "consent", "retention"],
+      "properties": {
+        "file": { "type": "string" },
+        "sha256": { "type": "string" },
+        "synthetic": { "type": "boolean" },
+        "consent": { "type": "string", "$comment": "who agreed to what, or why nobody had to" },
+        "retention": { "type": "string", "$comment": "how long derived data may exist and what deletes it" }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["tools", "joined_on"],
+      "properties": {
+        "tools": { "type": "array", "items": { "type": "string" } },
+        "joined_on": { "type": "string" }
+      }
+    },
+    "segments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["start", "end", "speaker", "text", "words"],
+        "properties": {
+          "start": { "type": "number" },
+          "end": { "type": "number" },
+          "speaker": { "type": "string", "$comment": "anonymous label like speaker_00, or unassigned" },
+          "text": { "type": "string" },
+          "text_reviewed": { "type": "string" },
+          "words": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["word", "start", "end", "probability"],
+              "properties": {
+                "word": { "type": "string" },
+                "start": { "type": "number" },
+                "end": { "type": "number" },
+                "probability": { "type": "number" },
+                "original_hypothesis": { "type": "string", "$comment": "present when a human correction replaced the machine reading" },
+                "corrected_by": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "visual_events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source_time", "file", "sha256", "reasons", "ocr_lines"],
+        "properties": {
+          "source_time": { "type": "number" },
+          "file": { "type": "string" },
+          "sha256": { "type": "string" },
+          "reasons": { "type": "array", "items": { "type": "string" } },
+          "ocr_lines": { "type": "array", "items": { "type": "string" } },
+          "needs_review": { "type": "boolean" }
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "required": ["corrections_applied", "diarization_flags"],
+      "$comment": "what a human checked, so the next reader knows what nobody checked"
+    },
+    "derived_artifacts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "$comment": "every file derived from the source; the deletion exercise walks this list"
+    }
+  }
+}

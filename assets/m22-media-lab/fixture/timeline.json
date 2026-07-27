@@ -1,0 +1,170 @@
+{
+  "note": "Generation ground truth for the synthetic fixture. Lesson tools must NOT read this file; it exists so reviews can be checked against what was actually staged.",
+  "total_seconds": 73.095,
+  "hold_silence": {
+    "start": 18.736,
+    "end": 22.236
+  },
+  "overlap": {
+    "caller_line": 6,
+    "agent_line": 7,
+    "region": [
+      38.788,
+      39.788
+    ]
+  },
+  "lines": [
+    {
+      "index": 0,
+      "speaker": "agent",
+      "start": 0.0,
+      "end": 6.479,
+      "text": "Thanks for calling Maple and Finch Garden Supply, this is Riley. What can I help you with today?",
+      "beat": "greeting"
+    },
+    {
+      "index": 1,
+      "speaker": "caller",
+      "start": 7.179,
+      "end": 15.338,
+      "text": "Hi Riley. I placed an order last week, order four two one seven, and the status page still says processing.",
+      "beat": "problem statement, digit sequence for the confidence lesson"
+    },
+    {
+      "index": 2,
+      "speaker": "agent",
+      "start": 15.937,
+      "end": 18.735,
+      "text": "Let me pull that up. One moment.",
+      "beat": "leads into the hold"
+    },
+    {
+      "index": 3,
+      "speaker": "agent",
+      "start": 22.236,
+      "end": 29.611,
+      "text": "Okay, I see it. Order four two one seven, one cedar planter box, placed July fourteenth.",
+      "beat": "HOLD GAP before this line: long silence for VAD versus fixed windows"
+    },
+    {
+      "index": 4,
+      "speaker": "caller",
+      "start": 29.86,
+      "end": 30.706,
+      "text": "Right.",
+      "beat": "short backchannel turn, diarization split risk"
+    },
+    {
+      "index": 5,
+      "speaker": "agent",
+      "start": 31.207,
+      "end": 37.494,
+      "text": "The warehouse shows it packed, but the carrier never picked it up. That is why the status is stuck.",
+      "beat": "explanation, scene changes to the timeline chart"
+    },
+    {
+      "index": 6,
+      "speaker": "caller",
+      "start": 38.093,
+      "end": 39.788,
+      "text": "So is it lost, or...",
+      "beat": "OVERLAP BASE: the next agent line starts before this one ends"
+    },
+    {
+      "index": 7,
+      "speaker": "agent",
+      "start": 38.788,
+      "end": 41.554,
+      "text": "No, no, it is still on the shelf.",
+      "beat": "OVERLAP: starts about one second before the caller line ends"
+    },
+    {
+      "index": 8,
+      "speaker": "caller",
+      "start": 42.154,
+      "end": 44.921,
+      "text": "Okay. So what happens now?",
+      "beat": "turn after overlap"
+    },
+    {
+      "index": 9,
+      "speaker": "agent",
+      "start": 45.421,
+      "end": 52.678,
+      "text": "Two options. I can reship it tomorrow with two day shipping at no charge, or refund the whole order today.",
+      "beat": "options"
+    },
+    {
+      "index": 10,
+      "speaker": "caller",
+      "start": 53.178,
+      "end": 54.007,
+      "text": "Hmm.",
+      "beat": "short turn, diarization split risk"
+    },
+    {
+      "index": 11,
+      "speaker": "caller",
+      "start": 54.807,
+      "end": 58.021,
+      "text": "Reship it. I still want the planter.",
+      "beat": "same speaker twice in a row, tests turn merging"
+    },
+    {
+      "index": 12,
+      "speaker": "agent",
+      "start": 58.521,
+      "end": 64.118,
+      "text": "Done. The new tracking number goes out to your email tonight. Anything else?",
+      "beat": "resolution, scene changes to the confirmation screen"
+    },
+    {
+      "index": 13,
+      "speaker": "caller",
+      "start": 64.618,
+      "end": 67.544,
+      "text": "No, that covers it. Thanks.",
+      "beat": "close"
+    },
+    {
+      "index": 14,
+      "speaker": "agent",
+      "start": 67.944,
+      "end": 71.895,
+      "text": "Thanks for calling Maple and Finch. Have a good one.",
+      "beat": "close"
+    }
+  ],
+  "scenes": [
+    {
+      "name": "s1-order-status",
+      "description": "order status page",
+      "start": 0.0,
+      "end": 19.136
+    },
+    {
+      "name": "s2-hold-screen",
+      "description": "hold screen",
+      "start": 19.136,
+      "end": 22.236
+    },
+    {
+      "name": "s3-order-detail",
+      "description": "order detail page",
+      "start": 22.236,
+      "end": 31.207
+    },
+    {
+      "name": "s4-fulfillment-timeline",
+      "description": "timeline chart",
+      "start": 31.207,
+      "end": 58.521
+    },
+    {
+      "name": "s5-resolution",
+      "description": "confirmation screen",
+      "start": 58.521,
+      "end": 73.095
+    }
+  ]
+}

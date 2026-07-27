@@ -1,0 +1,146 @@
+{
+  "id": "local-v1-windows-cpu-ollama",
+  "title": "Cell C runtime: Ollama with the pinned small model on Windows 11, CPU only",
+  "purpose": "The required m23 runtime path for Cell C. Installs the dated v1 runtime, pulls the pinned small instruct model, proves first prompt, CPU residency, loopback, direct API, stop, and undo. Frozen fixture task: ticket classification (plan 06 amendment 3b-1). This cell trades speed for running anywhere, on purpose: same model, same commands, slower tokens, and the record says so instead of apologizing. Status is CANARY: authored 2026-07-25 from the verified Cell A record and the runtime's official documentation, not yet executed on this cell; it flips to current after a start-to-finish run on real Cell C hardware, at which point every expected output below gets replaced by the observed one.",
+  "operating_system": "Windows 11 native",
+  "shell": "PowerShell",
+  "hardware_class": "Cell C: x86-64 CPU with 16 GB or more RAM",
+  "runtime": "Ollama",
+  "runtime_version": "Install current from the official source; record the version this cell actually installs at verify; version drift is the first suspect if output differs (Cell A verified 0.20.2 on 2026-07-25)",
+  "model_id": "qwen3.5:2b",
+  "model_revision": "324d162be6ca (Ollama digest); upstream Qwen/Qwen3.5-2B",
+  "format_or_quant": "Q8_0 GGUF via Ollama",
+  "prerequisites": [
+    "winget available (standard on Windows 11), or the official installer from the runtime's download page",
+    "About 3 GB of free disk and a network connection for the one-time model pull",
+    "License reviewed: Qwen3.5-2B is Apache 2.0 (verify at the upstream repository); no remote code runs, GGUF weights only"
+  ],
+  "estimated_download": "2.7 GB model artifact plus the runtime installer",
+  "estimated_duration": "25 to 35 minutes",
+  "steps": [
+    {
+      "purpose": "Install the runtime from an official source. On Windows it runs as a background app for your user session and starts on login.",
+      "cwd": null,
+      "command": "winget install --id Ollama.Ollama -e",
+      "expected_output": "winget reports a successful install; the runtime's icon appears in the system tray. Reopen the terminal so PATH picks up the install.",
+      "stop": "Quit the tray application to stop the background service at any time.",
+      "undo": "winget uninstall --id Ollama.Ollama removes the runtime; the model store under your user profile survives until you delete it.",
+      "common_errors": [
+        "winget: command not found: install App Installer from the Microsoft Store, or use the official installer from the runtime's download page.",
+        "ollama not recognized after install: open a new terminal so PATH updates."
+      ]
+    },
+    {
+      "purpose": "Record the exact runtime version; the canary flips to current against a recorded version.",
+      "cwd": null,
+      "command": "ollama --version",
+      "expected_output": "A version string. Cell A verified 0.20.2; record what this cell installs.",
+      "stop": "Nothing to stop.",
+      "undo": "Nothing to undo.",
+      "common_errors": [
+        "not recognized: open a new terminal so PATH picks up the install."
+      ]
+    },
+    {
+      "purpose": "Pull the pinned small instruct model and record its digest.",
+      "cwd": null,
+      "command": "ollama pull qwen3.5:2b",
+      "expected_output": "Layer downloads then success; ollama list then shows qwen3.5:2b with ID 324d162be6ca and size 2.7 GB.",
+      "stop": "Ctrl+C is safe; rerunning the pull resumes or verifies.",
+      "undo": "ollama rm qwen3.5:2b removes the model; a later pull downloads it again.",
+      "common_errors": [
+        "manifest unknown: check the exact model name and tag against the runtime's model library."
+      ]
+    },
+    {
+      "purpose": "First prompt. This model THINKS by default: the CLI streams its reasoning before the answer, and --hidethinking shows the answer alone. On CPU the reasoning tokens cost real seconds, which makes the thinking-off API options below matter even more on this cell.",
+      "cwd": null,
+      "command": "ollama run qwen3.5:2b --hidethinking \"In one sentence, what is a context window?\"",
+      "expected_output": "One short definition sentence. Cold start pauses while weights load into RAM; warm responses arrive at CPU pace, slower than the GPU cells and still entirely usable for short structured tasks. Record cold and warm timings at verify.",
+      "stop": "The one-shot form exits by itself; in interactive mode, /bye exits.",
+      "undo": "Nothing to undo; a prompt changes no state.",
+      "common_errors": [
+        "Long pause before output: the model is loading into RAM (cold start) or thinking; both are normal and longer on CPU.",
+        "Empty content when calling the OpenAI-compatible API with a max_tokens cap: the thinking consumed the whole budget. Send reasoning_effort none on /v1/chat/completions, or think false on the native /api/chat route."
+      ]
+    },
+    {
+      "purpose": "Verify where the model actually runs; on this cell the honest answer is the CPU, and the record proves it rather than assuming it.",
+      "cwd": null,
+      "command": "ollama ps",
+      "expected_output": "A row for qwen3.5:2b whose PROCESSOR column reports 100% CPU. That is correct for this cell, and it is the number that explains the pace of the previous step.",
+      "stop": "Nothing to stop; ps reads state.",
+      "undo": "Nothing to undo.",
+      "common_errors": [
+        "Empty list: the model unloaded after idling; run a prompt and check again."
+      ]
+    },
+    {
+      "purpose": "Confirm the service binds loopback only. The documented default bind is 127.0.0.1:11434; anything else means your environment customized OLLAMA_HOST.",
+      "cwd": null,
+      "command": "Get-NetTCPConnection -LocalPort 11434 -State Listen | Select-Object LocalAddress,LocalPort,OwningProcess",
+      "expected_output": "A listener on 127.0.0.1 port 11434. A LocalAddress of 0.0.0.0 or :: means the service listens on EVERY interface: treat that as the m23-6 exposure drill, find the OLLAMA_HOST override, and decide on purpose.",
+      "stop": "Nothing to stop; the query reads state.",
+      "undo": "Nothing to undo.",
+      "common_errors": [
+        "No output: the service is not running; start the tray application and retry."
+      ]
+    },
+    {
+      "purpose": "Prove the HTTP surface with a direct request before any application code.",
+      "cwd": null,
+      "command": "Invoke-RestMethod http://127.0.0.1:11434/v1/models | ConvertTo-Json -Depth 4",
+      "expected_output": "A JSON model list whose data array includes an entry with id qwen3.5:2b.",
+      "stop": "Nothing to stop; the request returns immediately.",
+      "undo": "Nothing to undo; a GET changes no state.",
+      "common_errors": [
+        "Unable to connect: the service is stopped; start the tray application and retry."
+      ]
+    },
+    {
+      "purpose": "Practice a clean stop and restart of a serve process you own, without touching the session service: run a second instance on loopback at another port, verify its bind, then stop it.",
+      "cwd": null,
+      "command": "$env:OLLAMA_HOST=\"127.0.0.1:11500\"; ollama serve",
+      "expected_output": "The serve process logs startup and stays attached; in a second terminal, Get-NetTCPConnection -LocalPort 11500 -State Listen shows 127.0.0.1 only, and Invoke-RestMethod http://127.0.0.1:11500/api/version answers. Ctrl+C stops it cleanly. Close the terminal afterward so the OLLAMA_HOST variable does not leak into later commands.",
+      "stop": "Ctrl+C in the serve terminal.",
+      "undo": "Stopping it is the undo; it shares your user's model store and writes nothing new.",
+      "common_errors": [
+        "bind: address already in use: pick another free port for the drill."
+      ]
+    },
+    {
+      "purpose": "Unload the model from memory when finished; the artifact stays on disk.",
+      "cwd": null,
+      "command": "ollama stop qwen3.5:2b",
+      "expected_output": "No output; ollama ps no longer lists the model, and RAM is released.",
+      "stop": "This IS the unload.",
+      "undo": "The next prompt reloads it automatically.",
+      "common_errors": []
+    }
+  ],
+  "health_check": "ollama --version answers, ollama ps shows 100% CPU while loaded, the loopback listener is on 127.0.0.1:11434, and the /v1/models request lists qwen3.5:2b",
+  "test_request": "Invoke-RestMethod http://127.0.0.1:11434/v1/models | ConvertTo-Json -Depth 4",
+  "expected_result": "DESK EXPECTATION pending on-OS verify: the pinned model pulls with the recorded digest, answers a first prompt at CPU pace, serves loopback HTTP, and stops cleanly. On Cell A the ten-case ticket-classification smoke run (native API, thinking off, temperature 0) parsed 10 of 10 as valid JSON; parse rate should hold on CPU since decoding is identical, only slower. Record this cell's own numbers at verify.",
+  "expected_memory": "DESK ESTIMATE pending on-OS verify: roughly 4 GB of system RAM for weights plus KV cache at 4096 context, comfortable inside the 16 GB floor; replace with the observed number",
+  "validated_context": "4096, course-validated on Cell A; revalidate on this cell at verify",
+  "privacy_notes": [
+    "The tested path needs no account and no API key.",
+    "Documented default bind is loopback; the bind step verifies YOUR machine instead of trusting the default, and a wildcard bind is treated as the exposure drill.",
+    "The one-time model pull is the only network use in this recipe; prompts run locally.",
+    "This recipe proves the declared path on the tested date, not universal privacy for every plugin, setting, or future version."
+  ],
+  "known_failures": [
+    "Thinking consumes a capped token budget on the OpenAI-compatible route, returning empty content: send reasoning_effort none there, or think false on the native route; on CPU the wasted thinking seconds hurt twice.",
+    "A machine near the 16 GB floor with heavy applications open can swap during load; close the heavy applications or drop a model size per the fit rule.",
+    "Cold starts pause longer than on the GPU cells while weights load; not a hang.",
+    "OLLAMA_HOST customized in the environment (including a leftover from the port drill) changes the bind; the bind step catches it."
+  ],
+  "official_sources": [
+    "https://ollama.com/library/qwen3.5",
+    "https://huggingface.co/Qwen/Qwen3.5-2B",
+    "https://docs.ollama.com/faq"
+  ],
+  "last_verified": "2026-07-25",
+  "reviewer": "Code With Vibes course team",
+  "status": "canary"
+}

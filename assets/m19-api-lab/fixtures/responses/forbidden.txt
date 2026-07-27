@@ -1,0 +1,13 @@
+HTTP/1.1 403 Forbidden
+Server: BaseHTTP/0.6 Python/3.9.6
+Date: Fri, 24 Jul 2026 23:17:42 GMT
+Content-Type: application/json
+Content-Length: 174
+X-Request-Id: req_613f3979ccf5
+
+{
+  "error": {
+    "type": "permission_error",
+    "message": "This key is valid but has no access to model 'mock-pro'. Your credential works; your permissions do not."
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "recorded_on": "2026-07-25",
+  "tool": "ffmpeg frame extraction, pipeline/sample_frames.py",
+  "source": "maple-finch-support-call.mp4",
+  "strategies": {
+    "periodic_seconds": 10.0,
+    "scene_threshold": 0.02,
+    "cues": [
+      32.0,
+      60.0
+    ]
+  },
+  "frames": [
+    {
+      "source_time": 0.0,
+      "file": "frames/periodic-001.png",
+      "reasons": [
+        "periodic"
+      ],
+      "sha256": "fc3794a69e34e3e25566eb54db358a7bbd4f5772172e2ea443beeb506467233a"
+    },
+    {
+      "source_time": 10.0,
+      "file": "frames/periodic-002.png",
+      "reasons": [
+        "periodic"
+      ],
+      "sha256": "fc3794a69e34e3e25566eb54db358a7bbd4f5772172e2ea443beeb506467233a"
+    },
+    {
+      "source_time": 19.1,
+      "file": "frames/scene-001.png",
+      "reasons": [
+        "scene-change"
+      ],
+      "sha256": "85f8a920be7ae74fd313b6328730e14283b4e0b08393d9e445dd0c06d0e1dcc7"
+    },
+    {
+      "source_time": 20.0,
+      "file": "frames/periodic-003.png",
+      "reasons": [
+        "periodic"
+      ],
+      "sha256": "7733b0174eb2004be795ed38f709537e112398841cbdec9c7895123191a98860"
+    },
+    {
+      "source_time": 22.2,
+      "file": "frames/scene-002.png",
+      "reasons": [
+        "scene-change"
+      ],
+      "sha256": "a8b76098f9f7505397754ccd2a74cd35f92d7263a4817132650eb5fbdc2b6ec4"
+    },
+    {
+      "source_time": 30.0,
+      "file": "frames/periodic-004.png",
+      "reasons": [
+        "periodic"
+      ],
+      "sha256": "801ffa3fc38ecdf45a91328ff9fc56d9899f1a16510800c953dbc8edfdd03ce9"
+    },
+    {
+      "source_time": 31.1,
+      "file": "frames/scene-003.png",
+      "reasons": [
+        "scene-change"
+      ],
+      "sha256": "62770abbf05d579b1983813a134f3a6e853762dc83f7a963d45ce6fc3eb5a7c6"
+    },
+    {
+      "source_time": 32.0,
+      "file": "frames/cue-000.png",
+      "reasons": [
+        "cue at 32.0s"
+      ],
+      "sha256": "cdc51c09b9f50e59b1065b948e514becc85ea998f95db0eed82eb72d99cd504d"
+    },
+    {
+      "source_time": 40.0,
+      "file": "frames/periodic-005.png",
+      "reasons": [
+        "periodic"
+      ],
+      "sha256": "801ffa3fc38ecdf45a91328ff9fc56d9899f1a16510800c953dbc8edfdd03ce9"
+    },
+    {
+      "source_time": 50.0,
+      "file": "frames/periodic-006.png",
+      "reasons": [
+        "periodic"
+      ],
+      "sha256": "c8dd00a10b8c5db71c9a02311e5b00b821b5ffff16eecc9b828526da6919e22f"
+    },
+    {
+      "source_time": 58.5,
+      "file": "frames/scene-004.png",
+      "reasons": [
+        "scene-change"
+      ],
+      "sha256": "dec5ec799c1ab07095e5938c53bfb08a399d45c5bc9abe322d7f6ad1ec075c8e"
+    },
+    {
+      "source_time": 60.0,
+      "file": "frames/periodic-007.png",
+      "reasons": [
+        "cue at 60.0s",
+        "periodic"
+      ],
+      "sha256": "212710901eee3a668f0046a878dcb6f7a0147255daa157ddd153c891f9979237"
+    }
+  ],
+  "reading": "Periodic sampling never misses for long but wastes frames on a static screen; scene-change catches every hard cut and nothing between them; cues get exactly what the transcript told you to look for. The manifest records reasons so a later reader knows why each frame exists."
+}

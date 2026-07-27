@@ -1,0 +1,118 @@
+{
+  "id": "local-v1-macos-mock-runtime-fallback",
+  "title": "Orchard mock runtime fallback on macOS: prove the operations without a model",
+  "purpose": "Fallback lane for a machine that cannot run the pinned real small model. Every operation is real: pull, serve, bind, request, list, stop, recover. Every output is a labeled course fixture. This recipe proves operations, never model behavior; quality, memory, context, and throughput claims require the real lane or its recorded read-along.",
+  "operating_system": "macOS 13 or newer",
+  "shell": "zsh or bash",
+  "hardware_class": "fallback fixture; no model hardware claim",
+  "runtime": "Code With Vibes Orchard Mock Runtime",
+  "runtime_version": "fixture_version 1",
+  "model_id": "orchard-3b-instruct",
+  "model_revision": "fixture-v1",
+  "format_or_quant": null,
+  "prerequisites": [
+    "Python 3.9 or newer on the PATH; confirm with step 1",
+    "A copy of the orchard-mock-runtime folder; no network access is needed at any step"
+  ],
+  "estimated_download": "0 B network; bundled fixture only",
+  "estimated_duration": "10 to 15 minutes",
+  "steps": [
+    {
+      "purpose": "Confirm the only prerequisite: standard-library Python.",
+      "cwd": null,
+      "command": "python3 --version",
+      "expected_output": "Python 3.9 or newer prints its version string.",
+      "stop": "Nothing to stop; the command exits immediately.",
+      "undo": "Nothing to undo; nothing changed.",
+      "common_errors": [
+        "command not found: install Python 3 from python.org, then open a new terminal window."
+      ]
+    },
+    {
+      "purpose": "Create and verify the mock artifact. This is the pull drill: progress, checksum, manifest, and lock handling with zero network.",
+      "cwd": "orchard-mock-runtime",
+      "command": "python3 orchard_runtime.py pull orchard-3b-instruct --state-dir .orchard-runtime",
+      "expected_output": "Eleven MOCK lines, opening with MOCK NOTICE no model weights will be downloaded, reporting sha256=f5277bd414643c90b16022e3a388513bf54b6f7377c49461789f7be108c9cc45, and ending with MOCK complete this artifact proves pull and verification mechanics only. A second run verifies the checksum and reports MOCK cached instead.",
+      "stop": "Ctrl+C is safe at any point; rerunning the pull verifies or recreates the artifact.",
+      "undo": "rm -rf .orchard-runtime removes every generated file.",
+      "common_errors": [
+        "MOCK ERROR mock_unknown_model, exit 2: use a model name from catalog.json.",
+        "MOCK ERROR mock_stale_artifact_lock, exit 5: rerun with --recover-stale-lock exactly as the error's recover line says."
+      ]
+    },
+    {
+      "purpose": "Start the mock server on loopback and watch the load, memory, and timing lines, each labeled as scenario metadata.",
+      "cwd": "orchard-mock-runtime",
+      "command": "python3 orchard_runtime.py serve orchard-3b-instruct --state-dir .orchard-runtime --run-id local-001",
+      "expected_output": "The startup transcript ends with MOCK ready base_url=http://127.0.0.1:8133/v1, then MOCK does not think; it proves the operations, and the terminal stays attached to the run.",
+      "stop": "Ctrl+C in this terminal, or the stop command in step 6 from another terminal. Both produce the same clean state transition.",
+      "undo": "Stopping the run is the undo; generated state stays under .orchard-runtime until step 7 deletes it.",
+      "common_errors": [
+        "MOCK ERROR mock_port_in_use, exit 2: another listener owns 8133; add --port with a free port and use that port in steps 4 and 5.",
+        "MOCK ERROR mock_model_not_pulled, exit 2: run step 2 first; the error prints the exact command."
+      ]
+    },
+    {
+      "purpose": "Prove the HTTP surface answers before any application code exists. Run this in a SECOND terminal.",
+      "cwd": "orchard-mock-runtime",
+      "command": "python3 -c \"import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:8133/v1/models', timeout=10).read().decode())\"",
+      "expected_output": "A JSON object with object list, a data array containing orchard-3b-instruct owned by course-mock, and mock true.",
+      "stop": "Nothing to stop; the request returns immediately.",
+      "undo": "Nothing to undo; a GET changes no state.",
+      "common_errors": [
+        "URLError Connection refused: the serve terminal is not ready yet or was stopped; check step 3's terminal."
+      ]
+    },
+    {
+      "purpose": "Inspect running mock state the way an operator would.",
+      "cwd": "orchard-mock-runtime",
+      "command": "python3 orchard_runtime.py ps --state-dir .orchard-runtime",
+      "expected_output": "A three-line listing: the column header, one ready row for local-001 on 127.0.0.1:8133 with reported 3584, and the line MOCK rows=1 memory is scenario metadata, not measured process memory.",
+      "stop": "Nothing to stop; ps exits immediately.",
+      "undo": "Nothing to undo; ps reads state, never writes it.",
+      "common_errors": [
+        "STATUS shows stale: the serve process died without a clean stop; run the stop command in step 6 to recover the state file safely."
+      ]
+    },
+    {
+      "purpose": "Stop the run from outside, the way a service gets stopped in practice.",
+      "cwd": "orchard-mock-runtime",
+      "command": "python3 orchard_runtime.py stop --state-dir .orchard-runtime --run-id local-001",
+      "expected_output": "MOCK stop requested run_id=local-001, then MOCK stopped run_id=local-001 status=clean. The serve terminal adds MOCK shutdown reason=stop-command run_id=local-001 and exits with code 0.",
+      "stop": "This IS the stop; it exits when the run confirms.",
+      "undo": "Start the run again with step 3; state and artifact survive a stop.",
+      "common_errors": [
+        "MOCK ERROR mock_run_not_found, exit 3: the run id does not match; check ps for the ids that exist."
+      ]
+    },
+    {
+      "purpose": "Leave the machine exactly as it started.",
+      "cwd": "orchard-mock-runtime",
+      "command": "rm -rf .orchard-runtime",
+      "expected_output": "No output; the generated state directory is gone and nothing else was touched.",
+      "stop": "Nothing to stop; the command exits immediately.",
+      "undo": "Run step 2 again; the fixture recreates identically, checksum and all.",
+      "common_errors": []
+    }
+  ],
+  "health_check": "python3 orchard_runtime.py ps --state-dir .orchard-runtime lists run local-001 as ready on 127.0.0.1:8133",
+  "test_request": "python3 -c \"import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:8133/v1/models', timeout=10).read().decode())\"",
+  "expected_result": "The run reaches MOCK ready, the test request returns the mock model list, and stop exits cleanly with code 0. Every generated content line begins [COURSE MOCK, NOT MODEL OUTPUT], and no step touches the network.",
+  "expected_memory": "mock-reported scenario metadata only",
+  "validated_context": null,
+  "privacy_notes": [
+    "No network: the pull creates a local fixture and every request stays on this machine.",
+    "No credentials: the runtime reads no API key and the connection profile's secret_env is null.",
+    "Loopback by default: the server binds 127.0.0.1 unless you explicitly run the exposure drill.",
+    "The exposure drill (--bind 0.0.0.0) really listens on every interface and warns first; use fixture data only, inspect the bind, then stop the run. Firewall policy decides who else can reach an exposed port."
+  ],
+  "known_failures": [
+    "Planted OOM: --reported-memory-mib above --memory-limit-mib exits 4 without allocating anything.",
+    "Port conflict: a second serve on the same address exits 2 with mock_port_in_use.",
+    "Slow load: --load-delay-ms holds STATUS at loading; a stop request during load still works.",
+    "Stale artifact lock: scripts/plant_failure.py plants one; pull exits 5 until rerun with --recover-stale-lock."
+  ],
+  "last_verified": "2026-07-25",
+  "reviewer": "Code With Vibes course team",
+  "status": "current"
+}

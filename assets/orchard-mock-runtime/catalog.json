@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "fixture_version": 1,
+  "mock": true,
+  "runtime": "orchard-runtime",
+  "runtime_title": "Code With Vibes Orchard Mock Runtime",
+  "reserved_namespace": "orchard",
+  "notice": "Every model in this catalog is a pretend course fixture. The orchard namespace is reserved for pretend course fixtures and matches no real repository, vendor, or license. Nothing here downloads weights or runs inference.",
+  "learner_sentence": "The mock runtime does not think. It proves the operations: pull, serve, bind, measure, stop, restart, recover, swap, promote, and roll back.",
+  "capabilities": {
+    "text": true,
+    "streaming": true,
+    "structured_output": false,
+    "tools": false,
+    "image_input": false,
+    "last_tested": "2026-07-24"
+  },
+  "models": {
+    "orchard-3b-instruct": {
+      "revision": "fixture-v1",
+      "role": "baseline",
+      "declared_mock_size_bytes": 2952790016,
+      "declared_mock_size_gib": 2.75,
+      "context_word_limit": 512,
+      "format_or_quant": null,
+      "note": "Baseline pretend fixture. The declared size is metadata printed next to the actual payload size; no file of that size is ever created."
+    },
+    "orchard-3b-instruct-canary": {
+      "revision": "fixture-v1",
+      "role": "canary",
+      "declared_mock_size_bytes": 2952790016,
+      "declared_mock_size_gib": 2.75,
+      "context_word_limit": 512,
+      "format_or_quant": null,
+      "note": "Swap fixture for the config-only swap, comparison, promotion, and rollback drills. It differs from the baseline on a fixed subset of fixture outputs and nothing else. It carries no quant label, no size difference, and no quality claim, so its fixture scores can never appear in a quant comparison result."
+    }
+  },
+  "generic_fixtures": {
+    "summarize the weekly status.": "weekly-status summary-shape",
+    "in one sentence, what does an adapter buy an application?": "adapter-boundary one-canonical-seam",
+    "ping": "health-shape ok"
+  },
+  "generic_pattern": "echo-shape words={words} digest={digest}",
+  "content_prefix": "[COURSE MOCK, NOT MODEL OUTPUT]"
+}
