@@ -14,8 +14,8 @@ m25-daily-driver/
 │   └── scripts/           # repo_check, slow_task, run_with_lock, notify
 ├── kit-templates/         # the Daily_Driver_Ops_Kit tree, one file per artifact
 └── recipes/
-    ├── claude-code-pack.md   # dated pack, v2.1.219, tested 2026-07-24
-    └── codex-cli-pack.md     # dated pack, v0.144.1, tested 2026-07-24
+    ├── claude-code-pack.md   # dated pack, CLI v2.1.220 help checked and docs verified 2026-08-02
+    └── codex-cli-pack.md     # dated pack, CLI v0.144.1 help checked and docs verified 2026-08-02
 ```
 
 ## How to use it
