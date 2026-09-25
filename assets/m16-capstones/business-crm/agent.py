@@ -36,7 +36,7 @@ from data_layer import (
 
 # Use a Sonnet-class model: routing + grounded Q&A doesn't need Opus,
 # and Haiku will struggle with multi-tool sequencing. See module 3.
-MODEL = os.environ.get("CRM_AGENT_MODEL", "claude-sonnet-4-7")
+MODEL = os.environ.get("CRM_AGENT_MODEL", "claude-sonnet-5")
 MAX_TOOL_ROUNDS = 5  # bounded loop; module 13 anti-pattern: unbounded agent loops
 
 
@@ -227,7 +227,7 @@ def run_agent(question: str, conn: sqlite3.Connection) -> AgentResponse:
     for _ in range(MAX_TOOL_ROUNDS):
         response = client.messages.create(
             model=MODEL,
-            max_tokens=1024,
+            max_tokens=4096,
             system=SYSTEM_PROMPT,
             tools=TOOLS,
             messages=messages,

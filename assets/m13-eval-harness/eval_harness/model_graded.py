@@ -41,7 +41,7 @@ Respond with the JSON object only, no surrounding prose."""
 class ModelGrader:
     """Grades outputs by calling a stronger model with a rubric prompt."""
 
-    model: str = "claude-opus-4-7"
+    model: str = "claude-opus-5-5"
     api_key_env: str = "ANTHROPIC_API_KEY"
     timeout_seconds: int = 30
 
@@ -69,8 +69,8 @@ class ModelGrader:
         try:
             response = client.messages.create(
                 model=self.model,
-                max_tokens=300,
-                temperature=0,
+                max_tokens=4000,  # Opus 5.5 always thinks; thinking counts here
+                # no temperature: Opus 5.5 rejects sampling params
                 messages=[
                     {
                         "role": "user",

@@ -35,7 +35,7 @@ from data_layer import (
 )
 
 
-MODEL = os.environ.get("RESEARCH_AGENT_MODEL", "claude-sonnet-4-7")
+MODEL = os.environ.get("RESEARCH_AGENT_MODEL", "claude-sonnet-5")
 MAX_TOOL_ROUNDS = 6
 
 
@@ -170,8 +170,8 @@ def synthesize(question: str, conn: sqlite3.Connection) -> SynthesisResult:
         try:
             response = client.messages.create(
                 model=MODEL,
-                max_tokens=1500,
-                temperature=0.2,
+                max_tokens=6000,
+                # no temperature: Sonnet 5 rejects sampling params
                 system=SYSTEM_PROMPT,
                 tools=TOOLS,
                 messages=messages,

@@ -29,7 +29,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from data_layer import Segment, get_segment, voice_examples
 
 
-MODEL = os.environ.get("CONTENT_AGENT_MODEL", "claude-sonnet-4-7")
+MODEL = os.environ.get("CONTENT_AGENT_MODEL", "claude-sonnet-5")
 
 
 # ---------- Schema ----------
@@ -135,8 +135,8 @@ def clip_scorer(segment: Segment) -> ClipScore:
     try:
         response = client.messages.create(
             model=MODEL,
-            max_tokens=200,
-            temperature=0,
+            max_tokens=2048,
+            # no temperature: Sonnet 5 rejects sampling params
             system=SCORER_SYSTEM,
             messages=[
                 {
@@ -220,8 +220,8 @@ def caption_writer(segment: Segment, platform: str, examples: list) -> Caption:
     try:
         response = client.messages.create(
             model=MODEL,
-            max_tokens=400,
-            temperature=0.4,
+            max_tokens=2048,
+            # no temperature: Sonnet 5 rejects sampling params
             system=CAPTION_SYSTEM,
             messages=[
                 {

@@ -1,12 +1,12 @@
 job_id,job_name,model_class,calls_per_day,input_tokens_per_call,output_tokens_per_call,input_rate_per_million_usd,output_rate_per_million_usd,monthly_input_cost_usd,monthly_output_cost_usd,monthly_total_usd
-ticket_classification,Ticket classification (Haiku),small,5000,800,200,0.80,4.00,96.00,120.00,216.00
-conversation_summarization,Conversation summary (Sonnet),mid,3000,3000,400,3.00,15.00,810.00,540.00,1350.00
-structured_extraction,Structured extraction (Sonnet),mid,2000,2500,600,3.00,15.00,450.00,540.00,990.00
-customer_support_draft,Support response draft (Opus),frontier,1500,2000,800,15.00,75.00,1350.00,2700.00,4050.00
-code_review_comment,Code review comment (local Qwen),mid-code,2500,4000,700,0.00,0.00,0.00,0.00,0.00
-content_drafting,Long content drafting (Sonnet),mid,800,1500,1500,3.00,15.00,108.00,540.00,648.00
-long_doc_synthesis,Long doc synthesis (Gemini),mid,400,40000,1500,2.50,10.00,1200.00,180.00,1380.00
-high_stakes_structured_output,High-stakes structured (Opus),frontier,200,2000,400,15.00,75.00,180.00,180.00,360.00
+ticket_classification,Ticket classification (Haiku),small,5000,800,200,1.00,5.00,120.00,150.00,270.00
+conversation_summarization,Conversation summary (Sonnet),mid,3000,3000,400,2.00,10.00,540.00,360.00,900.00
+structured_extraction,Structured extraction (Sonnet),mid,2000,2500,600,2.00,10.00,300.00,360.00,660.00
+customer_support_draft,Support response draft (Opus),frontier,1500,2000,800,4.00,20.00,360.00,720.00,1080.00
+code_review_comment,Code review comment (local Qwen3.8 27B),mid-code,2500,4000,700,0.00,0.00,0.00,0.00,0.00
+content_drafting,Long content drafting (Sonnet),mid,800,1500,1500,2.00,10.00,72.00,360.00,432.00
+long_doc_synthesis,Long doc synthesis (Gemini 3.8 Flash),mid,400,40000,1500,0.75,3.75,360.00,67.50,427.50
+high_stakes_structured_output,High-stakes structured (Opus),frontier,200,2000,400,4.00,20.00,48.00,48.00,96.00
 embedding_generation,Embedding generation (local),embedding-local,50000,400,0,0.00,0.00,0.00,0.00,0.00
-quick_chat_qa,Quick chat / Q&A (Haiku),small,4000,500,300,0.80,4.00,48.00,144.00,192.00
-,,,,,,,,,Monthly total (all jobs),9186.00
+quick_chat_qa,Quick chat / Q&A (Haiku),small,4000,500,300,1.00,5.00,60.00,180.00,240.00
+,,,,,,,,,Monthly total (all jobs),4105.50

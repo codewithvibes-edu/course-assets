@@ -1,5 +1,5 @@
 """
-Token-cost reference table for common 2026 models.
+Token-cost reference table for current models (list prices read 2026-09-25).
 
 Prices are in cents per million tokens. Verify against current provider
 pricing before using these for billing-impacting math; pricing pages
@@ -19,16 +19,25 @@ class ModelPrice:
     output_cents_per_1m: float
 
 
-# Illustrative pricing snapshot. Treat numbers as defaults to override.
+# List prices read 2026-09-25 from each provider's pricing page. Keys are the
+# names you log; match them to your provider's exact model IDs, and treat the
+# numbers as defaults to override.
 PRICING_TABLE: dict[str, ModelPrice] = {
-    "claude-opus-4-7": ModelPrice("claude-opus-4-7", "anthropic", 1500.0, 7500.0),
-    "claude-sonnet-4-6": ModelPrice("claude-sonnet-4-6", "anthropic", 300.0, 1500.0),
-    "claude-haiku-4-5": ModelPrice("claude-haiku-4-5", "anthropic", 80.0, 400.0),
-    "gpt-5": ModelPrice("gpt-5", "openai", 1000.0, 5000.0),
-    "gpt-5-mini": ModelPrice("gpt-5-mini", "openai", 200.0, 1000.0),
-    "gemini-1.5-pro": ModelPrice("gemini-1.5-pro", "google", 350.0, 1050.0),
-    "llama-3.3-70b-hosted": ModelPrice("llama-3.3-70b-hosted", "together", 90.0, 90.0),
-    "qwen-coder-32b-local": ModelPrice("qwen-coder-32b-local", "local", 0.0, 0.0),
+    "claude-opus-5-5": ModelPrice("claude-opus-5-5", "anthropic", 400.0, 2000.0),
+    "claude-fable-5-1": ModelPrice("claude-fable-5-1", "anthropic", 1000.0, 5000.0),
+    "claude-sonnet-5": ModelPrice("claude-sonnet-5", "anthropic", 200.0, 1000.0),
+    "claude-haiku-4-5": ModelPrice("claude-haiku-4-5", "anthropic", 100.0, 500.0),
+    "gpt-6-astra": ModelPrice("gpt-6-astra", "openai", 1000.0, 5000.0),
+    "gpt-6-sol": ModelPrice("gpt-6-sol", "openai", 200.0, 1000.0),
+    "gpt-6-luna": ModelPrice("gpt-6-luna", "openai", 10.0, 50.0),
+    # Introductory price through 2026-12-31; 150 / 750 from 2027-01-01.
+    "gemini-3.8-flash": ModelPrice("gemini-3.8-flash", "google", 75.0, 375.0),
+    "gemini-3.1-pro": ModelPrice("gemini-3.1-pro", "google", 200.0, 1200.0),
+    "grok-4.7": ModelPrice("grok-4.7", "spacexai", 200.0, 600.0),
+    # Off-peak prices; both double 01:00-04:00 and 06:00-10:00 UTC on weekdays.
+    "deepseek-flash": ModelPrice("deepseek-flash", "deepseek", 15.0, 60.0),
+    "deepseek-v4-pro": ModelPrice("deepseek-v4-pro", "deepseek", 66.0, 198.0),
+    "qwen3.8-27b-local": ModelPrice("qwen3.8-27b-local", "local", 0.0, 0.0),
 }
 
 

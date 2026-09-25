@@ -39,7 +39,7 @@ def main() -> int:
     )
     parser.add_argument(
         "--grader-model",
-        default="claude-opus-4-7",
+        default="claude-opus-5-5",
         help="Stronger model used for model-graded scoring",
     )
     args = parser.parse_args()

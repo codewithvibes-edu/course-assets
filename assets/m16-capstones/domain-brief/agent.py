@@ -39,7 +39,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from data_layer import PERMIT_ID_RE, DailyContext
 
 
-MODEL = os.environ.get("DOMAIN_BRIEF_MODEL", "claude-sonnet-4-7")
+MODEL = os.environ.get("DOMAIN_BRIEF_MODEL", "claude-sonnet-5")
 
 
 # ---------- Schema ----------
@@ -217,8 +217,8 @@ def analysis_agent(ctx: DailyContext) -> AnalysisFindings:
     try:
         response = client.messages.create(
             model=MODEL,
-            max_tokens=400,
-            temperature=0.2,
+            max_tokens=2048,
+            # no temperature: Sonnet 5 rejects sampling params
             system=ANALYSIS_SYSTEM,
             messages=[{"role": "user", "content": f"CONTEXT:\n{_context_json(ctx)}"}],
         )
@@ -332,8 +332,8 @@ def synthesis_agent(ctx: DailyContext, findings: AnalysisFindings) -> str:
     try:
         response = client.messages.create(
             model=MODEL,
-            max_tokens=1200,
-            temperature=0.3,
+            max_tokens=4800,
+            # no temperature: Sonnet 5 rejects sampling params
             system=SYNTHESIS_SYSTEM,
             messages=[
                 {

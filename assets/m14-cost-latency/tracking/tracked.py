@@ -7,12 +7,12 @@ Usage:
 
     tracer = Tracer("traces.db")
 
-    @tracked(tracer, agent="responder", model="claude-sonnet-4-6")
+    @tracked(tracer, agent="responder", model="claude-sonnet-5")
     def respond(prompt: str) -> str:
         # ... call the model ...
         return response_text
 
-    with traced(tracer, agent="responder", model="claude-sonnet-4-6") as span:
+    with traced(tracer, agent="responder", model="claude-sonnet-5") as span:
         response = call_model(prompt)
         span.input_tokens = response.usage.input_tokens
         span.output_tokens = response.usage.output_tokens

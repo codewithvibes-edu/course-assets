@@ -45,7 +45,7 @@ def main():
     @tracked(
         tracer,
         agent="demo_responder",
-        model="claude-sonnet-4-6",
+        model="claude-sonnet-5",
         extract_usage=extract_usage,
     )
     def respond(prompt: str) -> FakeResponse:

@@ -1,164 +1,210 @@
 {
   "_metadata": {
     "schema_version": "1.0",
-    "last_updated": "2026-05-15",
-    "description": "Parameterized routing-table template covering models, jobs, and fallback chains. Drop in your provider keys and job names. Pricing fields are 2026-snapshot placeholders; refresh them against vendor pricing pages before relying on them.",
+    "last_updated": "2026-09-25",
+    "description": "Parameterized routing-table template covering models, jobs, and fallback chains. Drop in your provider keys and job names. Prices are list prices read 2026-09-25; refresh them against vendor pricing pages before relying on them.",
     "verify_pricing_urls": {
       "anthropic": "https://claude.com/pricing#api",
-      "openai": "https://openai.com/api/pricing",
-      "google_gemini": "https://ai.google.dev/pricing",
-      "together": "https://www.together.ai/pricing",
-      "fireworks": "https://fireworks.ai/pricing",
-      "groq": "https://groq.com/pricing",
+      "openai": "https://developers.openai.com/api/docs/pricing",
+      "google_gemini": "https://ai.google.dev/gemini-api/docs/pricing",
+      "deepseek": "https://api-docs.deepseek.com/quick_start/pricing",
       "openrouter": "https://openrouter.ai/models"
     },
     "notes": [
-      "Every cost_per_1m_input_usd / cost_per_1m_output_usd value is a 2026 snapshot. Verify before trusting.",
+      "Every cost_per_1m_input_usd / cost_per_1m_output_usd value is a list price read 2026-09-25. Verify before trusting.",
       "expected_cost_per_call_usd is computed from the listed token assumptions, not measured. Replace with real averages from your trace logs once you have them.",
       "Open-weights provider pricing churns more than frontier API pricing. Check quarterly at minimum.",
       "Self-hosted entries set per-token cost to 0 by convention; real cost is capex plus power and is tracked separately."
     ]
   },
-
   "models": {
     "haiku-fast": {
       "provider": "anthropic",
       "name": "claude-haiku-4-5",
       "class": "small",
-      "cost_per_1m_input_usd": 0.8,
-      "cost_per_1m_output_usd": 4.0,
+      "cost_per_1m_input_usd": 1.0,
+      "cost_per_1m_output_usd": 5.0,
+      "accepts_temperature": true,
       "avg_latency_ms": 400,
       "context_window_tokens": 200000,
       "verify_pricing_url": "https://claude.com/pricing#api"
     },
     "sonnet-balanced": {
       "provider": "anthropic",
-      "name": "claude-sonnet-4-6",
+      "name": "claude-sonnet-5",
       "class": "mid",
-      "cost_per_1m_input_usd": 3.0,
-      "cost_per_1m_output_usd": 15.0,
+      "cost_per_1m_input_usd": 2.0,
+      "cost_per_1m_output_usd": 10.0,
+      "accepts_temperature": false,
       "avg_latency_ms": 800,
-      "context_window_tokens": 200000,
+      "context_window_tokens": 1000000,
       "verify_pricing_url": "https://claude.com/pricing#api"
     },
     "opus-frontier": {
       "provider": "anthropic",
-      "name": "claude-opus-4-7",
+      "name": "claude-opus-5-5",
       "class": "frontier",
-      "cost_per_1m_input_usd": 15.0,
-      "cost_per_1m_output_usd": 75.0,
+      "cost_per_1m_input_usd": 4.0,
+      "cost_per_1m_output_usd": 20.0,
+      "accepts_temperature": false,
       "avg_latency_ms": 1200,
-      "context_window_tokens": 200000,
+      "context_window_tokens": 1000000,
       "verify_pricing_url": "https://claude.com/pricing#api"
     },
     "gpt-frontier": {
       "provider": "openai",
-      "name": "gpt-5",
+      "name": "gpt-6-astra",
       "class": "frontier",
       "cost_per_1m_input_usd": 10.0,
-      "cost_per_1m_output_usd": 40.0,
+      "cost_per_1m_output_usd": 50.0,
       "avg_latency_ms": 1100,
-      "context_window_tokens": 256000,
-      "verify_pricing_url": "https://openai.com/api/pricing"
+      "context_window_tokens": null,
+      "verify_pricing_url": "https://developers.openai.com/api/docs/pricing",
+      "_note": "Short-context price; long-context requests bill at $20 / $75."
     },
     "gemini-mid": {
       "provider": "google",
-      "name": "gemini-2-5-pro",
+      "name": "gemini-3.8-flash",
       "class": "mid",
-      "cost_per_1m_input_usd": 2.5,
-      "cost_per_1m_output_usd": 10.0,
+      "cost_per_1m_input_usd": 0.75,
+      "cost_per_1m_output_usd": 3.75,
       "avg_latency_ms": 900,
-      "context_window_tokens": 1000000,
-      "verify_pricing_url": "https://ai.google.dev/pricing"
+      "context_window_tokens": null,
+      "verify_pricing_url": "https://ai.google.dev/gemini-api/docs/pricing",
+      "_note": "Introductory price through 2026-12-31; $1.50 / $7.50 from 2027-01-01."
     },
-    "llama-open-mid": {
-      "provider": "together",
-      "name": "llama-3-3-70b-instruct",
+    "deepseek-open-mid": {
+      "provider": "deepseek",
+      "name": "deepseek-flash",
       "class": "mid",
-      "cost_per_1m_input_usd": 0.6,
+      "cost_per_1m_input_usd": 0.15,
       "cost_per_1m_output_usd": 0.6,
       "avg_latency_ms": 700,
-      "context_window_tokens": 128000,
-      "verify_pricing_url": "https://www.together.ai/pricing"
+      "context_window_tokens": 1000000,
+      "verify_pricing_url": "https://api-docs.deepseek.com/quick_start/pricing",
+      "_note": "Off-peak price; doubles 01:00-04:00 and 06:00-10:00 UTC weekdays. DeepSeek's privacy policy says data is stored in China: set privacy_class accordingly. The MIT-licensed weights also run on other hosts."
     },
-    "qwen-coder-hosted": {
-      "provider": "fireworks",
-      "name": "qwen-coder-32b-instruct",
+    "open-code-hosted": {
+      "provider": "xiaomi",
+      "name": "mimo-v2.6-pro",
       "class": "mid-code",
-      "cost_per_1m_input_usd": 0.9,
-      "cost_per_1m_output_usd": 0.9,
-      "avg_latency_ms": 650,
-      "context_window_tokens": 128000,
-      "verify_pricing_url": "https://fireworks.ai/pricing"
+      "cost_per_1m_input_usd": 0.43,
+      "cost_per_1m_output_usd": 0.87,
+      "avg_latency_ms": 900,
+      "context_window_tokens": null,
+      "verify_pricing_url": "https://artificialanalysis.ai/models/mimo-v2-6-pro",
+      "_note": "Top open-weights model on the Artificial Analysis index on 2026-09-25 (MIT license). Price as listed there; confirm with your host."
     },
-    "groq-fast-mid": {
-      "provider": "groq",
-      "name": "llama-3-3-70b-versatile",
-      "class": "mid",
-      "cost_per_1m_input_usd": 0.59,
-      "cost_per_1m_output_usd": 0.79,
-      "avg_latency_ms": 250,
-      "context_window_tokens": 128000,
-      "verify_pricing_url": "https://groq.com/pricing"
+    "luna-fast": {
+      "provider": "openai",
+      "name": "gpt-6-luna",
+      "class": "small",
+      "cost_per_1m_input_usd": 0.1,
+      "cost_per_1m_output_usd": 0.5,
+      "avg_latency_ms": 350,
+      "context_window_tokens": null,
+      "verify_pricing_url": "https://developers.openai.com/api/docs/pricing"
     },
-    "qwen-coder-local": {
+    "qwen-local": {
       "provider": "local",
-      "name": "qwen-coder-32b-instruct",
-      "class": "small-local",
+      "name": "qwen3.8:27b",
+      "class": "mid-local",
       "cost_per_1m_input_usd": 0,
       "cost_per_1m_output_usd": 0,
-      "avg_latency_ms": 600,
-      "context_window_tokens": 128000,
-      "verify_pricing_url": "n/a: local hardware; capex plus power tracked separately"
+      "accepts_temperature": true,
+      "avg_latency_ms": 1500,
+      "context_window_tokens": 262144,
+      "verify_pricing_url": "n/a: local hardware; capex plus power tracked separately",
+      "_note": "Needs about 18 GB free memory (32 GB machine). Thinking is on by default; read the model card for the per-mode sampler settings."
     },
     "embed-local": {
       "provider": "local",
-      "name": "bge-large-en-v1-5",
+      "name": "bge-m3",
       "class": "embedding-local",
       "cost_per_1m_input_usd": 0,
       "cost_per_1m_output_usd": 0,
       "avg_latency_ms": 150,
-      "context_window_tokens": 512,
+      "context_window_tokens": 8192,
       "verify_pricing_url": "n/a: local hardware"
     }
   },
-
   "fallback_chains": {
     "anthropic_then_open": {
-      "description": "Try Anthropic primary, fall back to a hosted open-weights mid-size on rate-limit or 5xx.",
+      "description": "Try Anthropic primary, fall back to a hosted open-weights model on rate-limit or 5xx. Check the fallback's privacy class before routing private data to it.",
       "steps": [
-        { "model_id": "sonnet-balanced", "retry_on_rate_limit": true, "timeout_ms": 12000 },
-        { "model_id": "llama-open-mid", "retry_on_rate_limit": false, "timeout_ms": 12000 }
+        {
+          "model_id": "sonnet-balanced",
+          "retry_on_rate_limit": true,
+          "timeout_ms": 12000
+        },
+        {
+          "model_id": "deepseek-open-mid",
+          "retry_on_rate_limit": false,
+          "timeout_ms": 12000
+        }
       ]
     },
     "frontier_quality_chain": {
       "description": "For jobs where quality matters most. Primary frontier model, secondary cross-vendor frontier, no degraded text fallback.",
       "steps": [
-        { "model_id": "opus-frontier", "retry_on_rate_limit": true, "timeout_ms": 20000 },
-        { "model_id": "gpt-frontier", "retry_on_rate_limit": false, "timeout_ms": 20000 }
+        {
+          "model_id": "opus-frontier",
+          "retry_on_rate_limit": true,
+          "timeout_ms": 20000
+        },
+        {
+          "model_id": "gpt-frontier",
+          "retry_on_rate_limit": false,
+          "timeout_ms": 20000
+        }
       ]
     },
     "code_chain": {
-      "description": "Code generation chain. Self-hosted Qwen Coder primary; hosted Qwen Coder secondary; mid-frontier last.",
+      "description": "Code generation chain. Local Qwen3.8 27B primary; hosted open-weights model secondary; Sonnet last.",
       "steps": [
-        { "model_id": "qwen-coder-local", "retry_on_rate_limit": false, "timeout_ms": 15000 },
-        { "model_id": "qwen-coder-hosted", "retry_on_rate_limit": true, "timeout_ms": 15000 },
-        { "model_id": "sonnet-balanced", "retry_on_rate_limit": true, "timeout_ms": 15000 }
+        {
+          "model_id": "qwen-local",
+          "retry_on_rate_limit": false,
+          "timeout_ms": 15000
+        },
+        {
+          "model_id": "open-code-hosted",
+          "retry_on_rate_limit": true,
+          "timeout_ms": 15000
+        },
+        {
+          "model_id": "sonnet-balanced",
+          "retry_on_rate_limit": true,
+          "timeout_ms": 15000
+        }
       ]
     },
     "low_latency_chain": {
-      "description": "Latency-sensitive chain. Groq fast inference primary, Anthropic Haiku secondary.",
+      "description": "Latency-sensitive chain. GPT-6 Luna primary, Claude Haiku secondary.",
       "steps": [
-        { "model_id": "groq-fast-mid", "retry_on_rate_limit": true, "timeout_ms": 3000 },
-        { "model_id": "haiku-fast", "retry_on_rate_limit": false, "timeout_ms": 4000 }
+        {
+          "model_id": "luna-fast",
+          "retry_on_rate_limit": true,
+          "timeout_ms": 3000
+        },
+        {
+          "model_id": "haiku-fast",
+          "retry_on_rate_limit": false,
+          "timeout_ms": 4000
+        }
       ]
     },
     "raise_immediately": {
       "description": "No fallback. Job refuses to degrade. Caller decides what to do.",
-      "steps": [{ "model_id": "opus-frontier", "retry_on_rate_limit": true, "timeout_ms": 20000 }]
+      "steps": [
+        {
+          "model_id": "opus-frontier",
+          "retry_on_rate_limit": true,
+          "timeout_ms": 20000
+        }
+      ]
     }
   },
-
   "jobs": {
     "ticket_classification": {
       "description": "Inbound support ticket classification into a fixed taxonomy.",
@@ -166,39 +212,54 @@
       "fallback_chain_id": "low_latency_chain",
       "temperature": 0,
       "max_tokens": 200,
-      "tokens_per_call_assumed": { "input": 800, "output": 200 },
-      "expected_cost_per_call_usd": 0.0014,
-      "_cost_note": "0.0014 = (800/1M)*0.80 + (200/1M)*4.00. 2026 Anthropic Haiku pricing; verify."
+      "tokens_per_call_assumed": {
+        "input": 800,
+        "output": 200
+      },
+      "expected_cost_per_call_usd": 0.0018,
+      "_cost_note": "0.0018 = (800/1M)*1.00 + (200/1M)*5.00. List price read 2026-09-25 for claude-haiku-4-5; verify before relying on it."
     },
     "conversation_summarization": {
       "description": "Summarize a multi-turn conversation transcript for human review.",
       "primary_model_id": "sonnet-balanced",
       "fallback_chain_id": "anthropic_then_open",
-      "temperature": 0,
-      "max_tokens": 500,
-      "tokens_per_call_assumed": { "input": 3000, "output": 400 },
-      "expected_cost_per_call_usd": 0.015,
-      "_cost_note": "0.0150 = (3000/1M)*3.00 + (400/1M)*15.00. 2026 Anthropic Sonnet pricing; verify."
+      "max_tokens": 2000,
+      "tokens_per_call_assumed": {
+        "input": 3000,
+        "output": 400
+      },
+      "expected_cost_per_call_usd": 0.01,
+      "_cost_note": "0.0100 = (3000/1M)*2.00 + (400/1M)*10.00. List price read 2026-09-25 for claude-sonnet-5; verify before relying on it.",
+      "_temperature_note": "No temperature: claude-sonnet-5 rejects sampling params. Steer with output_config effort.",
+      "_max_tokens_note": "Thinking counts toward max_tokens on this model, so the cap is well above the expected answer length."
     },
     "structured_extraction": {
       "description": "Extract structured fields (sender, amount, due date, etc.) from unstructured documents.",
       "primary_model_id": "sonnet-balanced",
       "fallback_chain_id": "anthropic_then_open",
-      "temperature": 0,
-      "max_tokens": 800,
-      "tokens_per_call_assumed": { "input": 2500, "output": 600 },
-      "expected_cost_per_call_usd": 0.0165,
-      "_cost_note": "0.0165 = (2500/1M)*3.00 + (600/1M)*15.00. Pin temperature at 0 for deterministic JSON output."
+      "max_tokens": 3200,
+      "tokens_per_call_assumed": {
+        "input": 2500,
+        "output": 600
+      },
+      "expected_cost_per_call_usd": 0.011,
+      "_cost_note": "0.0110 = (2500/1M)*2.00 + (600/1M)*10.00. List price read 2026-09-25 for claude-sonnet-5; verify before relying on it.",
+      "_temperature_note": "No temperature: claude-sonnet-5 rejects sampling params. Steer with output_config effort.",
+      "_max_tokens_note": "Thinking counts toward max_tokens on this model, so the cap is well above the expected answer length."
     },
     "customer_support_draft": {
       "description": "Draft a customer-facing response that requires tone control and product knowledge.",
       "primary_model_id": "opus-frontier",
       "fallback_chain_id": "frontier_quality_chain",
-      "temperature": 0.3,
-      "max_tokens": 1000,
-      "tokens_per_call_assumed": { "input": 2000, "output": 800 },
-      "expected_cost_per_call_usd": 0.09,
-      "_cost_note": "0.0900 = (2000/1M)*15.00 + (800/1M)*75.00. Frontier reserved for the customer-facing surface; verify pricing."
+      "max_tokens": 4000,
+      "tokens_per_call_assumed": {
+        "input": 2000,
+        "output": 800
+      },
+      "expected_cost_per_call_usd": 0.024,
+      "_cost_note": "0.0240 = (2000/1M)*4.00 + (800/1M)*20.00. List price read 2026-09-25 for claude-opus-5-5; verify before relying on it.",
+      "_temperature_note": "No temperature: claude-opus-5-5 rejects sampling params. Steer with output_config effort.",
+      "_max_tokens_note": "Thinking counts toward max_tokens on this model, so the cap is well above the expected answer length."
     },
     "code_review_comment": {
       "description": "Generate a code review comment given a diff and the surrounding file context.",
@@ -206,7 +267,10 @@
       "fallback_chain_id": "code_chain",
       "temperature": 0,
       "max_tokens": 1500,
-      "tokens_per_call_assumed": { "input": 4000, "output": 700 },
+      "tokens_per_call_assumed": {
+        "input": 4000,
+        "output": 700
+      },
       "expected_cost_per_call_usd": 0.0,
       "_cost_note": "Self-hosted primary; marginal per-call cost is approximately zero. Capex plus power tracked separately."
     },
@@ -214,11 +278,15 @@
       "description": "Draft long-form content given an outline and a tone reference.",
       "primary_model_id": "sonnet-balanced",
       "fallback_chain_id": "anthropic_then_open",
-      "temperature": 0.7,
-      "max_tokens": 2000,
-      "tokens_per_call_assumed": { "input": 1500, "output": 1500 },
-      "expected_cost_per_call_usd": 0.027,
-      "_cost_note": "0.0270 = (1500/1M)*3.00 + (1500/1M)*15.00. Temperature 0.7 because tone variety matters here."
+      "max_tokens": 8000,
+      "tokens_per_call_assumed": {
+        "input": 1500,
+        "output": 1500
+      },
+      "expected_cost_per_call_usd": 0.018,
+      "_cost_note": "0.0180 = (1500/1M)*2.00 + (1500/1M)*10.00. List price read 2026-09-25 for claude-sonnet-5; verify before relying on it.",
+      "_temperature_note": "No temperature: claude-sonnet-5 rejects sampling params. Steer with output_config effort.",
+      "_max_tokens_note": "Thinking counts toward max_tokens on this model, so the cap is well above the expected answer length."
     },
     "long_doc_synthesis": {
       "description": "Read a long document (10k-100k tokens) and produce a structured synthesis.",
@@ -226,19 +294,26 @@
       "fallback_chain_id": "anthropic_then_open",
       "temperature": 0,
       "max_tokens": 2000,
-      "tokens_per_call_assumed": { "input": 40000, "output": 1500 },
-      "expected_cost_per_call_usd": 0.115,
-      "_cost_note": "0.1150 = (40000/1M)*2.50 + (1500/1M)*10.00. Gemini chosen for 1M-token context; verify Google pricing."
+      "tokens_per_call_assumed": {
+        "input": 40000,
+        "output": 1500
+      },
+      "expected_cost_per_call_usd": 0.035625,
+      "_cost_note": "0.0356 = (40000/1M)*0.75 + (1500/1M)*3.75. List price read 2026-09-25 for gemini-3.8-flash; verify before relying on it."
     },
     "high_stakes_structured_output": {
       "description": "Structured output where a wrong answer has irreversible cost (financial, legal, compliance).",
       "primary_model_id": "opus-frontier",
       "fallback_chain_id": "raise_immediately",
-      "temperature": 0,
-      "max_tokens": 500,
-      "tokens_per_call_assumed": { "input": 2000, "output": 400 },
-      "expected_cost_per_call_usd": 0.06,
-      "_cost_note": "0.0600 = (2000/1M)*15.00 + (400/1M)*75.00. Refuses to degrade; raise instead of falling back."
+      "max_tokens": 2000,
+      "tokens_per_call_assumed": {
+        "input": 2000,
+        "output": 400
+      },
+      "expected_cost_per_call_usd": 0.016,
+      "_cost_note": "0.0160 = (2000/1M)*4.00 + (400/1M)*20.00. List price read 2026-09-25 for claude-opus-5-5; verify before relying on it.",
+      "_temperature_note": "No temperature: claude-opus-5-5 rejects sampling params. Steer with output_config effort.",
+      "_max_tokens_note": "Thinking counts toward max_tokens on this model, so the cap is well above the expected answer length."
     },
     "embedding_generation": {
       "description": "Embedding generation for retrieval. High volume, latency tolerant.",
@@ -246,9 +321,12 @@
       "fallback_chain_id": null,
       "temperature": null,
       "max_tokens": null,
-      "tokens_per_call_assumed": { "input": 400, "output": 0 },
+      "tokens_per_call_assumed": {
+        "input": 400,
+        "output": 0
+      },
       "expected_cost_per_call_usd": 0.0,
-      "_cost_note": "Self-hosted embedding model. No per-call dollar cost."
+      "_cost_note": "0.0000 = (400/1M)*0.00 + (0/1M)*0.00. List price read 2026-09-25 for bge-m3; verify before relying on it."
     }
   }
 }

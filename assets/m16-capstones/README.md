@@ -71,7 +71,7 @@ Every track follows the same shape (this is the point):
    read-only by default. Write operations (CRM updates, drafts,
    posts, publishes) route through a `propose_action` /
    `review_queue` payload that a human approves.
-3. **Anthropic Messages API.** Agents use `claude-sonnet-4-7`-class
+3. **Anthropic Messages API.** Agents use `claude-sonnet-5`-class
    models with tool-use loops bounded by `MAX_TOOL_ROUNDS` to prevent
    runaway cost (Module 13 pattern).
 4. **Evals before scale.** `eval_set.yaml` has 8-10 cases with

@@ -44,7 +44,7 @@ def run_suite(
     suite_path: Path,
     *,
     skip_model_graded: bool = False,
-    grader_model: str = "claude-opus-4-7",
+    grader_model: str = "claude-opus-5-5",
 ) -> SuiteResult:
     suite_config, cases = load_suite(suite_path)
     suite_name = suite_config.get("suite_name", suite_path.stem)

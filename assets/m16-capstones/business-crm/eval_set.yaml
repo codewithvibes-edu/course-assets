@@ -8,7 +8,7 @@
 # Run via: python example.py --eval
 
 suite: crm-intelligence-v1
-model_under_test: claude-sonnet-4-7
+model_under_test: claude-sonnet-5
 
 cases:
   - id: lookup-acme-latest

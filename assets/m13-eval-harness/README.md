@@ -59,7 +59,7 @@ cases:
         expected: 'billing'
     model_graded:
       - rubric: 'Is the suggested_action appropriate for the urgency?'
-        grader_model: 'claude-opus-4-7'
+        grader_model: 'claude-opus-5-5'
         passing_threshold: 0.8
     human_review_sample_rate: 0.05
 ```
@@ -77,7 +77,7 @@ cases:
 
 ### Model-graded (slower, costs API calls, rubric-based)
 
-- A stronger model (Claude Opus, GPT-5) scores the output of a weaker
+- A stronger model (Claude Opus 5.5, GPT-6 Astra) scores the output of a weaker
   one against a rubric.
 - Useful for subjective quality (writing tone, code style, edge case
   handling).

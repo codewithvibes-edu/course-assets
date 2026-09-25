@@ -18,7 +18,7 @@ def test_write_and_query(tmp_path: Path):
     span = TraceSpan(
         trace_id="t1",
         agent="responder",
-        model="claude-sonnet-4-6",
+        model="claude-sonnet-5",
         input_tokens=100,
         output_tokens=50,
         cost_cents=0.25,
@@ -34,7 +34,7 @@ def test_write_and_query(tmp_path: Path):
 
 def test_span_context_manager_records_duration(tmp_path: Path):
     tracer = Tracer(db_path=tmp_path / "traces.db")
-    with tracer.span(agent="r", model="claude-sonnet-4-6") as span:
+    with tracer.span(agent="r", model="claude-sonnet-5") as span:
         span.input_tokens = 10
         span.output_tokens = 5
     rows = tracer.query("SELECT duration_ms, outcome FROM traces ORDER BY started_at DESC LIMIT 1")
